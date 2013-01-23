@@ -9,7 +9,8 @@ Used technologies (included as Maven dependencies):
   *Gilead 1.3.2
   
   *PostgreSQL JDBC driver 9.1
-  
+
+
 Application server: JBoss 7.1.1 final
 
 To deploy to the running Jboss instance: 
