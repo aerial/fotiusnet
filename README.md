@@ -18,3 +18,4 @@ To deploy to the running Jboss instance:
   * execute mvn jboss-as:deploy (will deploy the created WAR)
 
 Accessing the deployed application: http://{jboss.url}/Fotiusnet/FotiusNet.html
+
