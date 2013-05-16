@@ -1,36 +1,23 @@
 package com.fotius.server.impl;
 
 import com.fotius.client.service.FotiusService;
+import com.fotius.server.impl.hibernate.HibernateUtil;
 import com.fotius.shared.model.*;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.sencha.gxt.data.shared.SortInfo;
 import com.sencha.gxt.data.shared.loader.*;
-import net.sf.gilead.core.PersistentBeanManager;
-import net.sf.gilead.core.hibernate.HibernateUtil;
-import net.sf.gilead.core.serialization.GwtProxySerialization;
-import net.sf.gilead.core.store.stateless.StatelessProxyStore;
-import net.sf.gilead.gwt.PersistentRemoteService;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 import java.util.*;
 
-public class FotiusServiceImpl extends PersistentRemoteService
+public class FotiusServiceImpl extends RemoteServiceServlet
         implements FotiusService {
-    private HibernateUtil gileadHibernateUtil = new HibernateUtil();
-
-    public FotiusServiceImpl() {
-        gileadHibernateUtil.setSessionFactory(com.fotius.server.impl.hibernate.HibernateUtil.getSessionFactory());
-        PersistentBeanManager persistentBeanManager = new PersistentBeanManager();
-        persistentBeanManager.setPersistenceUtil(gileadHibernateUtil);
-        StatelessProxyStore sps = new StatelessProxyStore();
-        sps.setProxySerializer(new GwtProxySerialization());
-        persistentBeanManager.setProxyStore(sps);
-        setBeanManager(persistentBeanManager);
-    }
+    private HibernateUtil hibernateUtil = new HibernateUtil();
 
     @Override
     public Teacher loginAsTeacher(String login, String password) {
-        Session session = gileadHibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         String sql = " from Teacher where login = '" + login + "' and password = '" + password + "'";
 
@@ -44,7 +31,7 @@ public class FotiusServiceImpl extends PersistentRemoteService
 
     @Override
     public Student loginAsStudent(String login, String password) {
-        Session session = gileadHibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         String sql = " from Student where login = " + login + " and password = " + password;
 
@@ -59,7 +46,7 @@ public class FotiusServiceImpl extends PersistentRemoteService
 
     @Override
     public PagingLoadResult<Teacher> getTeachers(PagingLoadConfig config) {
-        Session session = gileadHibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         String sql = " from Teacher ";
         Query query = session.createQuery(sql);
@@ -113,7 +100,7 @@ public class FotiusServiceImpl extends PersistentRemoteService
 
     @Override
     public PagingLoadResult<Student> getStudents(PagingLoadConfig config) {
-//        Session session = gileadHibernateUtil.getSessionFactory().getCurrentSession();
+//        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
 //        session.beginTransaction();
 //        String sql = " from Student ";
 //        Query query = session.createQuery(sql);
@@ -137,7 +124,7 @@ public class FotiusServiceImpl extends PersistentRemoteService
 
 
 
-        Session session = gileadHibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         String sql = " from Student ";
         final Query query = session.createQuery(sql);
@@ -180,7 +167,7 @@ public class FotiusServiceImpl extends PersistentRemoteService
 
     @Override
     public PagingLoadResult<StudentGroup> getStudentGroups(PagingLoadConfig config) {
-        Session session = gileadHibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         String sql = " from StudentGroup ";
         final Query query = session.createQuery(sql);
@@ -193,7 +180,7 @@ public class FotiusServiceImpl extends PersistentRemoteService
 
     @Override
     public StudentGroup saveStudentGroup(StudentGroup group) {
-        Session session = gileadHibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         StudentGroup savedGroup = (StudentGroup)session.merge(group);
         session.getTransaction().commit();
@@ -202,7 +189,7 @@ public class FotiusServiceImpl extends PersistentRemoteService
 
     @Override
     public Teacher saveTeacher(Teacher teacher) {
-        Session session = gileadHibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         Teacher savedTeacher = (Teacher)session.merge(teacher);
         session.getTransaction().commit();
@@ -211,7 +198,7 @@ public class FotiusServiceImpl extends PersistentRemoteService
 
     @Override
     public Student saveStudent(Student student) {
-        Session session = gileadHibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         Student savedStudent = (Student)session.merge(student);
         session.getTransaction().commit();
@@ -220,7 +207,7 @@ public class FotiusServiceImpl extends PersistentRemoteService
 
     @Override
     public void removeTeacher(Teacher teacher) {
-        Session session = gileadHibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         session.delete(teacher);
         session.getTransaction().commit();
@@ -228,7 +215,7 @@ public class FotiusServiceImpl extends PersistentRemoteService
 
     @Override
     public void removeStudent(Student student) {
-        Session session = gileadHibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         session.delete(student);
         session.getTransaction().commit();
@@ -236,7 +223,7 @@ public class FotiusServiceImpl extends PersistentRemoteService
 
     @Override
     public PagingLoadResult<TeacherRole> getTeacherRoles(PagingLoadConfig config) {
-        Session session = gileadHibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         String sql = " from TeacherRole ";
         final Query query = session.createQuery(sql);
@@ -248,7 +235,7 @@ public class FotiusServiceImpl extends PersistentRemoteService
 
     @Override
     public PagingLoadResult<StudentRole> getStudentRoles(PagingLoadConfig config) {
-        Session session = gileadHibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         String sql = " from StudentRole ";
         final Query query = session.createQuery(sql);

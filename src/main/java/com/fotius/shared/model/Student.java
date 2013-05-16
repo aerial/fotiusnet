@@ -1,14 +1,12 @@
 package com.fotius.shared.model;
 
-import net.sf.gilead.pojo.gwt.LightEntity;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "students")
 @SequenceGenerator(name = "students_sequence", sequenceName = "students_sequence", allocationSize = 1)
-public class Student  extends LightEntity implements Serializable{
+public class Student implements Serializable{
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "students_sequence")
     @Column(name = "student_id")

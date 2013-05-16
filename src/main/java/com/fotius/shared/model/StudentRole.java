@@ -1,14 +1,11 @@
 package com.fotius.shared.model;
 
-
-import net.sf.gilead.pojo.gwt.LightEntity;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "student_roles")
-public class StudentRole extends LightEntity implements Serializable {
+public class StudentRole implements Serializable {
     @Id
     @Column(name = "roleid")
     private Long roleId;

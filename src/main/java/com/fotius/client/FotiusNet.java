@@ -1,6 +1,5 @@
 package com.fotius.client;
 
-import com.fotius.client.images.Images;
 import com.fotius.client.service.FotiusService;
 import com.fotius.client.service.FotiusServiceAsync;
 import com.fotius.client.ui.*;
@@ -12,7 +11,6 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.sencha.gxt.desktop.client.layout.DesktopLayoutType;
 import com.sencha.gxt.desktop.client.widget.*;
-import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.info.Info;
 

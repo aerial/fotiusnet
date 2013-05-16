@@ -6,40 +6,9 @@
     <groupId>groupId</groupId>
     <artifactId>Fotiusnet</artifactId>
     <packaging>war</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1</version>
 
     <repositories>
-        <repository>
-            <id>gilead</id>
-            <url>https://gilead.svn.sourceforge.net/svnroot/gilead/gilead/maven-repo/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>jboss</id>
-            <url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>jboss-deprecated-repository</id>
-            <name>JBoss Deprecated Maven Repository</name>
-            <url>https://repository.jboss.org/nexus/content/repositories/deprecated/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
         <repository>
             <id>public</id>
             <url>http://maven.nuxeo.org/nexus/content/groups/public</url>
@@ -69,53 +38,24 @@
             <version>3.0.1</version>
         </dependency>
         <dependency>
-            <groupId>net.sf.gilead</groupId>
-            <artifactId>gilead4gwt</artifactId>
-            <version>1.3.2</version>
-            <type>jar</type>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jboss.ejb3</groupId>
-                    <artifactId>jboss-ejb3-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.jboss.aop</groupId>
-                    <artifactId>jboss-aop</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.gilead</groupId>
-            <artifactId>gilead-hibernate</artifactId>
-            <type>jar</type>
-            <version>1.3.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jboss.ejb3</groupId>
-                    <artifactId>jboss-ejb3-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.jboss.aop</groupId>
-                    <artifactId>jboss-aop</artifactId>
-                </exclusion>
-        </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.gilead</groupId>
-            <artifactId>gilead-core</artifactId>
-            <type>jar</type>
-            <version>1.3.2</version>
-        </dependency>
-        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate</artifactId>
             <version>3.2.6.ga</version>
         </dependency>
         <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.0-api</artifactId>
+            <version>1.0.1.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+            <version>3.5.6-Final</version>
+        </dependency>
+        <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.1-901-1.jdbc4</version>
-
         </dependency>
     </dependencies>
 
