@@ -1,5 +1,7 @@
 package com.fotius.shared.model;
 
+import com.google.gwt.user.client.rpc.GwtTransient;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -13,11 +15,14 @@ public class StudentGroup implements Serializable  {
     @Column(name = "groupid")
     private Long groupId;
 
+    @Column(name = "name")
     private String name;
 
     @OneToMany(cascade = {CascadeType.ALL},
             fetch = FetchType.EAGER)
+
     @JoinColumn(name = "groupid")
+    @GwtTransient
     private List<Student> students;
 
     public Long getGroupId() {

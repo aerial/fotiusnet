@@ -1,5 +1,7 @@
 package com.fotius.shared.model;
 
+import com.google.gwt.user.client.rpc.GwtTransient;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
