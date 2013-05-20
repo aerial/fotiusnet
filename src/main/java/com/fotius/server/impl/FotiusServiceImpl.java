@@ -181,6 +181,17 @@ public class FotiusServiceImpl extends RemoteServiceServlet
     }
 
     @Override
+    public void removeGroup(StudentGroup group) {
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            session.beginTransaction();
+            session.delete(group);
+        } finally {
+            session.getTransaction().commit();
+        }
+    }
+
+    @Override
     public Teacher saveTeacher(Teacher teacher) {
         Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         try {

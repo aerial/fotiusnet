@@ -40,7 +40,7 @@ public class GroupsWindow extends Window {
     private static GroupsWindow instance = null;
     private final FotiusServiceAsync fotiusService = GWT.create(FotiusService.class);
     private Grid<StudentGroup> groupsGrid;
-    private TextButton addGroupBtn, refreshBtn;
+    private TextButton addGroupBtn, editGroupBtn, removeGroupBtn;
     private PagingToolBar toolbar;
     private PagingLoader loader;
     private ToolBar toolBar;
@@ -62,7 +62,6 @@ public class GroupsWindow extends Window {
         mainPanel.setHeaderVisible(false);
         mainPanel.setWidget(getGridPanel());
         add(mainPanel);
-//        addButton(getAddGroupBtn());
     }
 
     public VerticalLayoutContainer getGridPanel() {
@@ -130,32 +129,73 @@ public class GroupsWindow extends Window {
     }
 
     private TextButton getAddGroupBtn() {
-        addGroupBtn = new TextButton("Add group");
-        addGroupBtn.setIcon(Resources.IMAGES.add());
-        addGroupBtn.addSelectHandler(new SelectEvent.SelectHandler() {
-            @Override
-            public void onSelect(SelectEvent event) {
-                EditGroupWindow.getInstance().show();
-            }
-        });
+        if (addGroupBtn == null) {
+            addGroupBtn = new TextButton("Add group", Resources.IMAGES.users_add_24());
+            addGroupBtn.setScale(ButtonCell.ButtonScale.LARGE);
+            addGroupBtn.setIconAlign(ButtonCell.IconAlign.TOP);
+            addGroupBtn.addSelectHandler(new SelectEvent.SelectHandler() {
+                @Override
+                public void onSelect(SelectEvent event) {
+                    EditGroupWindow.getInstance().show();
+                }
+            });
+        }
         return addGroupBtn;
+    }
+
+    private TextButton getEditGroupBtn() {
+        if (editGroupBtn == null) {
+            editGroupBtn = new TextButton("Edit group", Resources.IMAGES.users_edit_24());
+            editGroupBtn.setScale(ButtonCell.ButtonScale.LARGE);
+            editGroupBtn.setIconAlign(ButtonCell.IconAlign.TOP);
+            editGroupBtn.addSelectHandler(new SelectEvent.SelectHandler() {
+                @Override
+                public void onSelect(SelectEvent selectEvent) {
+                    StudentGroup group = groupsGrid.getSelectionModel().getSelectedItem();
+                    if (group != null) {
+                        EditGroupWindow.getInstance().fillGroupData(group);
+                        EditGroupWindow.getInstance().show();
+                    }
+                }
+            });
+        }
+        return editGroupBtn;
+    }
+
+    private TextButton getRemoveGroupBtn() {
+        if (removeGroupBtn == null) {
+            removeGroupBtn = new TextButton("Remove group", Resources.IMAGES.users_delete_24());
+            removeGroupBtn.setScale(ButtonCell.ButtonScale.LARGE);
+            removeGroupBtn.setIconAlign(ButtonCell.IconAlign.TOP);
+//            removeGroupBtn.addSelectHandler(new SelectEvent.SelectHandler() {
+//                @Override
+//                public void onSelect(SelectEvent selectEvent) {
+//                    StudentGroup group = groupsGrid.getSelectionModel().getSelectedItem();
+//                    if (group != null) {
+//                        fotiusService.removeGroup(group, new AsyncCallback<Void>() {
+//                            @Override
+//                            public void onFailure(Throwable throwable) {
+//                                //To change body of implemented methods use File | Settings | File Templates.
+//                            }
+//
+//                            @Override
+//                            public void onSuccess(Void aVoid) {
+//                                refresh();                            }
+//
+//                        });
+//                    }
+//                }
+//            });
+        }
+        return removeGroupBtn;
     }
 
     private ToolBar getToolBar() {
         if (toolBar == null) {
             toolBar = new ToolBar();
-            TextButton btn = new TextButton("Add group", Resources.IMAGES.users_add_24());
-            btn.setScale(ButtonCell.ButtonScale.LARGE);
-            btn.setIconAlign(ButtonCell.IconAlign.TOP);
-            toolBar.add(btn);
-            btn = new TextButton("Edit group", Resources.IMAGES.users_edit_24());
-            btn.setScale(ButtonCell.ButtonScale.LARGE);
-            btn.setIconAlign(ButtonCell.IconAlign.TOP);
-            toolBar.add(btn);
-            btn = new TextButton("Remove group", Resources.IMAGES.users_delete_24());
-            btn.setScale(ButtonCell.ButtonScale.LARGE);
-            btn.setIconAlign(ButtonCell.IconAlign.TOP);
-            toolBar.add(btn);
+            toolBar.add(getAddGroupBtn());
+            toolBar.add(getEditGroupBtn());
+            toolbar.add(getRemoveGroupBtn());
         }
         return toolBar;
     }

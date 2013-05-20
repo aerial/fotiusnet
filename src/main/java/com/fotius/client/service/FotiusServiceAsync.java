@@ -34,4 +34,6 @@ public interface FotiusServiceAsync {
     void getStudentGroups(PagingLoadConfig config, AsyncCallback<PagingLoadResult<StudentGroup>> async);
 
     void saveStudentGroup(StudentGroup group, AsyncCallback<StudentGroup> async);
+
+    void removeGroup(StudentGroup group, AsyncCallback<Void> async);
 }

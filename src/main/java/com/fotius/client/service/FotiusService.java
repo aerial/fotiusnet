@@ -25,6 +25,8 @@ public interface FotiusService extends RemoteService {
 
     StudentGroup saveStudentGroup(StudentGroup group);
 
+    void removeGroup(StudentGroup group);
+
     Teacher saveTeacher(Teacher teacher);
 
     Student saveStudent(Student student);
