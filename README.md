@@ -6,8 +6,6 @@ Used technologies (included as Maven dependencies):
   
   *Hibernate 3.2.6
   
-  *Gilead 1.3.2
-  
   *PostgreSQL JDBC driver 9.1
 
 
