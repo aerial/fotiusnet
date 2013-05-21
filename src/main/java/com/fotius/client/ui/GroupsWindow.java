@@ -23,6 +23,7 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.Window;
+import com.sencha.gxt.widget.core.client.box.MessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.RowDoubleClickEvent;
@@ -30,6 +31,7 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
+import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
@@ -164,28 +166,29 @@ public class GroupsWindow extends Window {
 
     private TextButton getRemoveGroupBtn() {
         if (removeGroupBtn == null) {
-            removeGroupBtn = new TextButton("Remove group", Resources.IMAGES.users_delete_24());
+            removeGroupBtn = new TextButton("Remove group", Resources.IMAGES.delete24());
             removeGroupBtn.setScale(ButtonCell.ButtonScale.LARGE);
             removeGroupBtn.setIconAlign(ButtonCell.IconAlign.TOP);
-//            removeGroupBtn.addSelectHandler(new SelectEvent.SelectHandler() {
-//                @Override
-//                public void onSelect(SelectEvent selectEvent) {
-//                    StudentGroup group = groupsGrid.getSelectionModel().getSelectedItem();
-//                    if (group != null) {
-//                        fotiusService.removeGroup(group, new AsyncCallback<Void>() {
-//                            @Override
-//                            public void onFailure(Throwable throwable) {
-//                                //To change body of implemented methods use File | Settings | File Templates.
-//                            }
-//
-//                            @Override
-//                            public void onSuccess(Void aVoid) {
-//                                refresh();                            }
-//
-//                        });
-//                    }
-//                }
-//            });
+            removeGroupBtn.addSelectHandler(new SelectEvent.SelectHandler() {
+                @Override
+                public void onSelect(SelectEvent selectEvent) {
+                    StudentGroup group = groupsGrid.getSelectionModel().getSelectedItem();
+                    if (group != null) {
+                        fotiusService.removeGroup(group, new AsyncCallback<Void>() {
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                new MessageBox("Error", "Unable to remove group").show();
+                            }
+
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Info.display("Success", "Group removed");
+                                refresh();
+                            }
+                        });
+                    }
+                }
+            });
         }
         return removeGroupBtn;
     }
@@ -195,7 +198,7 @@ public class GroupsWindow extends Window {
             toolBar = new ToolBar();
             toolBar.add(getAddGroupBtn());
             toolBar.add(getEditGroupBtn());
-            toolbar.add(getRemoveGroupBtn());
+            toolBar.add(getRemoveGroupBtn());
         }
         return toolBar;
     }

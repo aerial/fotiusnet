@@ -40,7 +40,7 @@ public class TeachersWindow extends Window {
     private static TeachersWindow instance = null;
     private final FotiusServiceAsync fotiusService = GWT.create(FotiusService.class);
     private Grid<Teacher> teachersGrid;
-    private TextButton addTeacherBtn;
+    private TextButton addTeacherBtn, editTeacherBtn, removeTeacherBtn;
     private PagingLoader loader;
     private ToolBar toolBar;
 
@@ -59,10 +59,8 @@ public class TeachersWindow extends Window {
         setMinimizable(true);
         ContentPanel mainPanel = new ContentPanel();
         mainPanel.setHeaderVisible(false);
-
         mainPanel.setWidget(getGridPanel());
         add(mainPanel);
-//        addButton(getAddTeacherBtn());
     }
 
     public VerticalLayoutContainer getGridPanel() {
@@ -145,21 +143,8 @@ public class TeachersWindow extends Window {
     }
 
     private TextButton getAddTeacherBtn() {
-        addTeacherBtn = new TextButton("Add teacher");
-        addTeacherBtn.setIcon(Resources.IMAGES.add16());
-        addTeacherBtn.addSelectHandler(new SelectEvent.SelectHandler() {
-            @Override
-            public void onSelect(SelectEvent event) {
-                EditTeacherWindow.getInstance().show();
-            }
-        });
-        return addTeacherBtn;
-    }
-
-    private ToolBar getToolBar() {
-        if (toolBar == null) {
-            toolBar = new ToolBar();
-            TextButton addTeacherBtn = new TextButton("Add teacher", Resources.IMAGES.add24());
+        if (addTeacherBtn == null) {
+            addTeacherBtn = new TextButton("Add teacher", Resources.IMAGES.add24());
             addTeacherBtn.setScale(ButtonCell.ButtonScale.LARGE);
             addTeacherBtn.setIconAlign(ButtonCell.IconAlign.TOP);
             addTeacherBtn.addSelectHandler(new SelectEvent.SelectHandler() {
@@ -168,8 +153,13 @@ public class TeachersWindow extends Window {
                     EditTeacherWindow.getInstance().show();
                 }
             });
-            toolBar.add(addTeacherBtn);
-            TextButton editTeacherBtn = new TextButton("Edit teacher", Resources.IMAGES.edit24());
+        }
+        return addTeacherBtn;
+    }
+
+    private TextButton getEditTeacherBtn() {
+        if (editTeacherBtn == null) {
+            editTeacherBtn = new TextButton("Edit teacher", Resources.IMAGES.edit24());
             editTeacherBtn.setScale(ButtonCell.ButtonScale.LARGE);
             editTeacherBtn.setIconAlign(ButtonCell.IconAlign.TOP);
             editTeacherBtn.addSelectHandler(new SelectEvent.SelectHandler() {
@@ -183,8 +173,13 @@ public class TeachersWindow extends Window {
                     teacherWindow.show();
                 }
             });
-            toolBar.add(editTeacherBtn);
-            TextButton removeTeacherBtn = new TextButton("Remove teacher", Resources.IMAGES.delete24());
+        }
+        return editTeacherBtn;
+    }
+
+    private TextButton getRemoveTeacherBtn() {
+        if (removeTeacherBtn == null) {
+            removeTeacherBtn = new TextButton("Remove teacher", Resources.IMAGES.delete24());
             removeTeacherBtn.setScale(ButtonCell.ButtonScale.LARGE);
             removeTeacherBtn.setIconAlign(ButtonCell.IconAlign.TOP);
             removeTeacherBtn.addSelectHandler(new SelectEvent.SelectHandler() {
@@ -203,15 +198,24 @@ public class TeachersWindow extends Window {
                     });
                 }
             });
-            toolBar.add(removeTeacherBtn);
-            removeTeacherBtn = new TextButton("Download list", Resources.IMAGES.arrow_down());
-            removeTeacherBtn.setScale(ButtonCell.ButtonScale.LARGE);
-            removeTeacherBtn.setIconAlign(ButtonCell.IconAlign.TOP);
-            toolBar.add(removeTeacherBtn);
-            removeTeacherBtn = new TextButton("Upload list", Resources.IMAGES.arrow_up());
-            removeTeacherBtn.setScale(ButtonCell.ButtonScale.LARGE);
-            removeTeacherBtn.setIconAlign(ButtonCell.IconAlign.TOP);
-            toolBar.add(removeTeacherBtn);
+        }
+        return removeTeacherBtn;
+    }
+
+    private ToolBar getToolBar() {
+        if (toolBar == null) {
+            toolBar = new ToolBar();
+            toolBar.add(getAddTeacherBtn());
+            toolBar.add(getEditTeacherBtn());
+            toolBar.add(getRemoveTeacherBtn());
+//            removeTeacherBtn = new TextButton("Download list", Resources.IMAGES.arrow_down());
+//            removeTeacherBtn.setScale(ButtonCell.ButtonScale.LARGE);
+//            removeTeacherBtn.setIconAlign(ButtonCell.IconAlign.TOP);
+//            toolBar.add(removeTeacherBtn);
+//            removeTeacherBtn = new TextButton("Upload list", Resources.IMAGES.arrow_up());
+//            removeTeacherBtn.setScale(ButtonCell.ButtonScale.LARGE);
+//            removeTeacherBtn.setIconAlign(ButtonCell.IconAlign.TOP);
+//            toolBar.add(removeTeacherBtn);
         }
         return toolBar;
     }

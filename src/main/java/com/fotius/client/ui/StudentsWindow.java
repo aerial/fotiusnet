@@ -44,6 +44,7 @@ public class StudentsWindow extends Window {
     private static StudentsWindow instance = null;
     private final FotiusServiceAsync fotiusService = GWT.create(FotiusService.class);
     private Grid<Student> studentsGrid;
+    private TextButton addStudentBtn, editStudentBtn, removeStudentBtn;
     private PagingLoader loader;
     private ToolBar toolBar;
 
@@ -137,10 +138,9 @@ public class StudentsWindow extends Window {
         return con;
     }
 
-    private ToolBar getToolBar() {
-        if (toolBar == null) {
-            toolBar = new ToolBar();
-            TextButton addStudentBtn = new TextButton("Add", Resources.IMAGES.add24());
+    private TextButton getAddStudentButton() {
+        if (addStudentBtn == null) {
+            addStudentBtn = new TextButton("Add", Resources.IMAGES.add24());
             addStudentBtn.setScale(ButtonCell.ButtonScale.LARGE);
             addStudentBtn.setIconAlign(ButtonCell.IconAlign.LEFT);
             addStudentBtn.addSelectHandler(new SelectEvent.SelectHandler() {
@@ -149,11 +149,15 @@ public class StudentsWindow extends Window {
                     EditStudentWindow.getInstance().show();
                 }
             });
-            toolBar.add(addStudentBtn);
-            TextButton editStudentBtn = new TextButton("Edit", Resources.IMAGES.edit24());
+        }
+        return addStudentBtn;
+    }
+
+    private TextButton getEditStudentBtn() {
+        if (editStudentBtn == null) {
+            editStudentBtn = new TextButton("Edit", Resources.IMAGES.edit24());
             editStudentBtn.setScale(ButtonCell.ButtonScale.LARGE);
             editStudentBtn.setIconAlign(ButtonCell.IconAlign.LEFT);
-//            editStudentBtn.setBorders(true);
             editStudentBtn.addSelectHandler(new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent event) {
@@ -165,8 +169,15 @@ public class StudentsWindow extends Window {
                     studentWindow.show();
                 }
             });
-            toolBar.add(editStudentBtn);
-            TextButton removeStudentBtn = new TextButton("Remove", Resources.IMAGES.delete24());
+
+        }
+        return editStudentBtn;
+
+    }
+
+    private TextButton getRemoveStudentBtn() {
+        if (removeStudentBtn == null) {
+            removeStudentBtn = new TextButton("Remove", Resources.IMAGES.delete24());
             removeStudentBtn.setScale(ButtonCell.ButtonScale.LARGE);
             removeStudentBtn.setIconAlign(ButtonCell.IconAlign.LEFT);
             removeStudentBtn.addSelectHandler(new SelectEvent.SelectHandler() {
@@ -185,47 +196,27 @@ public class StudentsWindow extends Window {
                     });
                 }
             });
-            toolBar.add(removeStudentBtn);
+        }
+        return removeStudentBtn;
+
+    }
+
+    private ToolBar getToolBar() {
+        if (toolBar == null) {
+            toolBar = new ToolBar();
+            toolBar.add(getAddStudentButton());
+            toolBar.add(getEditStudentBtn());
+            toolBar.add(getRemoveStudentBtn());
             toolBar.add(new FillToolItem());
             removeStudentBtn = new TextButton("Download list", Resources.IMAGES.arrow_down());
             removeStudentBtn.setScale(ButtonCell.ButtonScale.LARGE);
             removeStudentBtn.setIconAlign(ButtonCell.IconAlign.LEFT);
-            removeStudentBtn.addSelectHandler(new SelectEvent.SelectHandler() {
-                @Override
-                public void onSelect(SelectEvent event) {
-                    fotiusService.removeStudent(studentsGrid.getSelectionModel().getSelectedItem(), new AsyncCallback<Void>() {
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            new MessageBox("Error", "Unable to remove student").show();
-                        }
-
-                        @Override
-                        public void onSuccess(Void result) {
-                            refresh();
-                        }
-                    });
-                }
-            });
+            //TODO add handler
             toolBar.add(removeStudentBtn);
             removeStudentBtn = new TextButton("Upload list", Resources.IMAGES.arrow_up());
             removeStudentBtn.setScale(ButtonCell.ButtonScale.LARGE);
             removeStudentBtn.setIconAlign(ButtonCell.IconAlign.LEFT);
-            removeStudentBtn.addSelectHandler(new SelectEvent.SelectHandler() {
-                @Override
-                public void onSelect(SelectEvent event) {
-                    fotiusService.removeStudent(studentsGrid.getSelectionModel().getSelectedItem(), new AsyncCallback<Void>() {
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            new MessageBox("Error", "Unable to remove student").show();
-                        }
-
-                        @Override
-                        public void onSuccess(Void result) {
-                            refresh();
-                        }
-                    });
-                }
-            });
+            //TODO add handler
             toolBar.add(removeStudentBtn);
         }
         return toolBar;
