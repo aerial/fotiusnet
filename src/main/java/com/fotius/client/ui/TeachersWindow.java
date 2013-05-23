@@ -5,149 +5,78 @@ import com.fotius.client.model.TeacherProperties;
 import com.fotius.client.service.FotiusService;
 import com.fotius.client.service.FotiusServiceAsync;
 import com.fotius.shared.model.Teacher;
-import com.fotius.shared.model.TeacherRole;
-import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
-
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.sencha.gxt.cell.core.client.ButtonCell;
-import com.sencha.gxt.data.client.loader.RpcProxy;
-import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
-import com.sencha.gxt.data.shared.loader.LoadResultListStoreBinding;
 import com.sencha.gxt.data.shared.loader.PagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
-import com.sencha.gxt.data.shared.loader.PagingLoader;
-import com.sencha.gxt.widget.core.client.ContentPanel;
-import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.box.MessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.event.RowDoubleClickEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
-import com.sencha.gxt.widget.core.client.grid.ColumnModel;
-import com.sencha.gxt.widget.core.client.grid.Grid;
-import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class TeachersWindow extends Window {
-    private static TeachersWindow instance = null;
+public class TeachersWindow extends BaseGridWindow<Teacher, TeacherProperties> {
+
+    public static TeachersWindow instance = null;
+    private final TeacherProperties props = GWT.create(TeacherProperties.class);
     private final FotiusServiceAsync fotiusService = GWT.create(FotiusService.class);
-    private Grid<Teacher> teachersGrid;
     private TextButton addTeacherBtn, editTeacherBtn, removeTeacherBtn;
-    private PagingLoader loader;
-    private ToolBar toolBar;
+
 
     public static TeachersWindow getInstance() {
         if (instance == null) {
-            instance = new TeachersWindow();
+            instance = new TeachersWindow("Teachers window", Resources.IMAGES.table());
         }
         return instance;
     }
 
-    public TeachersWindow() {
-        getHeader().setIcon(Resources.IMAGES.table());
-        setHeadingText("Teachers");
-        setSize("500px", "400px");
-        setMaximizable(true);
-        setMinimizable(true);
-        ContentPanel mainPanel = new ContentPanel();
-        mainPanel.setHeaderVisible(false);
-        mainPanel.setWidget(getGridPanel());
-        add(mainPanel);
+
+    public TeachersWindow(String title, ImageResource icon) {
+        super(title, icon);
     }
 
-    public VerticalLayoutContainer getGridPanel() {
-        final FotiusServiceAsync fotiusService = GWT.create(FotiusService.class);
+    @Override
+    public void loadData(PagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<Teacher>> callback) {
+        fotiusService.getTeachers(loadConfig, callback);
+    }
 
-        RpcProxy<PagingLoadConfig, PagingLoadResult<Teacher>> proxy = new RpcProxy<PagingLoadConfig, PagingLoadResult<Teacher>>() {
-            @Override
-            public void load(PagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<Teacher>> callback) {
-                fotiusService.getTeachers(loadConfig, callback);
-            }
-        };
-
-        ListStore<Teacher> store = new ListStore<Teacher>(new ModelKeyProvider<Teacher>() {
-            @Override
-            public String getKey(Teacher teacher) {
-                return "" + teacher.getTeacherId();
-            }
-        });
-        loader = new PagingLoader<PagingLoadConfig, PagingLoadResult<Teacher>>(
-                proxy);
-        loader.setRemoteSort(true);
-        loader.addLoadHandler(new LoadResultListStoreBinding<PagingLoadConfig, Teacher, PagingLoadResult<Teacher>>(store));
-
-        final PagingToolBar toolBar = new PagingToolBar(50);
-        toolBar.getElement().getStyle().setProperty("borderBottom", "none");
-        toolBar.bind(loader);
-
-
-        TeacherProperties props = GWT.create(TeacherProperties.class);
-        ColumnConfig<Teacher, String> nameColumn = new ColumnConfig<Teacher, String>(props.name(), 150, "name");
-        ColumnConfig<Teacher, String> loginColumn = new ColumnConfig<Teacher, String>(props.login(), 150, "login");
-        ColumnConfig<Teacher, String> passwordConfig = new ColumnConfig<Teacher, String>(props.password(), 150, "pass");
-        ColumnConfig<Teacher, TeacherRole> roleConfig = new ColumnConfig<Teacher, TeacherRole>(props.role(), 150, "role");
-        roleConfig.setCell(new AbstractCell<TeacherRole>() {
-            @Override
-            public void render(Context context, TeacherRole value, SafeHtmlBuilder sb) {
-                if (value != null) {
-                    sb.appendEscaped(value.getName());
-                }
-            }
-        });
+    @Override
+    public List<ColumnConfig<Teacher, ?>> getColumnConfigs() {
+        ColumnConfig<Teacher, String> nameColumn = new ColumnConfig<Teacher, String>(getProperties().name(), 150, "name");
+        ColumnConfig<Teacher, String> loginColumn = new ColumnConfig<Teacher, String>(getProperties().login(), 150, "login");
+        ColumnConfig<Teacher, String> passwordConfig = new ColumnConfig<Teacher, String>(getProperties().password(), 150, "pass");
+        ColumnConfig<Teacher, String> roleConfig = new ColumnConfig<Teacher, String>(getProperties().role(), 150, "role");
         List<ColumnConfig<Teacher, ?>> l = new ArrayList<ColumnConfig<Teacher, ?>>();
         l.add(nameColumn);
         l.add(loginColumn);
         l.add(passwordConfig);
         l.add(roleConfig);
-        ColumnModel<Teacher> cm = new ColumnModel<Teacher>(l);
+        return l;
+    }
 
-        teachersGrid = new Grid<Teacher>(store, cm){
-            @Override
-            protected void onAfterFirstAttach() {
-                super.onAfterFirstAttach();
-                Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-                    @Override
-                    public void execute() {
-                        loader.load();
-                    }
-                });
-            }
-        };;
-        teachersGrid.setLoader(loader);
-        teachersGrid.setLoadMask(true);
-        teachersGrid.getView().setForceFit(true);
-        teachersGrid.addRowDoubleClickHandler(new RowDoubleClickEvent.RowDoubleClickHandler() {
-            @Override
-            public void onRowDoubleClick(RowDoubleClickEvent event) {
-                EditTeacherWindow.getInstance().show();
-                Teacher teacher = teachersGrid.getStore().get(event.getRowIndex());
-                EditTeacherWindow editTeacherWindow = EditTeacherWindow.getInstance();
-                editTeacherWindow.fillTeacherData(teacher);
-            }
-        });
+    @Override
+    public TeacherProperties getProperties() {
+        return props;
+    }
 
-        VerticalLayoutContainer con = new VerticalLayoutContainer();
-        con.setBorders(true);
-        con.add(getToolBar(), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
-        con.add(teachersGrid, new VerticalLayoutContainer.VerticalLayoutData(1, 1));
-        con.add(toolBar, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
-        return con;
+    @Override
+    public ModelKeyProvider<Teacher> getModelKey() {
+        return props.teacherId();
+    }
+
+    @Override
+    public List<TextButton> getToolbarButtons() {
+        return Arrays.asList(getAddTeacherBtn(), getEditTeacherBtn(), getRemoveTeacherBtn());
     }
 
     private TextButton getAddTeacherBtn() {
         if (addTeacherBtn == null) {
-            addTeacherBtn = new TextButton("Add teacher", Resources.IMAGES.add24());
-            addTeacherBtn.setScale(ButtonCell.ButtonScale.LARGE);
-            addTeacherBtn.setIconAlign(ButtonCell.IconAlign.TOP);
-            addTeacherBtn.addSelectHandler(new SelectEvent.SelectHandler() {
+            addTeacherBtn = UIHelper.createToolbarBtn("Add teacher", Resources.IMAGES.add24(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent event) {
                     EditTeacherWindow.getInstance().show();
@@ -159,14 +88,11 @@ public class TeachersWindow extends Window {
 
     private TextButton getEditTeacherBtn() {
         if (editTeacherBtn == null) {
-            editTeacherBtn = new TextButton("Edit teacher", Resources.IMAGES.edit24());
-            editTeacherBtn.setScale(ButtonCell.ButtonScale.LARGE);
-            editTeacherBtn.setIconAlign(ButtonCell.IconAlign.TOP);
-            editTeacherBtn.addSelectHandler(new SelectEvent.SelectHandler() {
+            editTeacherBtn = UIHelper.createToolbarBtn("Edit teacher", Resources.IMAGES.edit24(), new SelectEvent.SelectHandler() {
                 @Override
-                public void onSelect(SelectEvent event) {
+                public void onSelect(SelectEvent selectEvent) {
                     EditTeacherWindow teacherWindow = EditTeacherWindow.getInstance();
-                    Teacher teacher = teachersGrid.getSelectionModel().getSelectedItem();
+                    Teacher teacher = getSelectedEntity();
                     if (teacher != null) {
                         teacherWindow.fillTeacherData(teacher);
                     }
@@ -179,18 +105,14 @@ public class TeachersWindow extends Window {
 
     private TextButton getRemoveTeacherBtn() {
         if (removeTeacherBtn == null) {
-            removeTeacherBtn = new TextButton("Remove teacher", Resources.IMAGES.delete24());
-            removeTeacherBtn.setScale(ButtonCell.ButtonScale.LARGE);
-            removeTeacherBtn.setIconAlign(ButtonCell.IconAlign.TOP);
-            removeTeacherBtn.addSelectHandler(new SelectEvent.SelectHandler() {
+            removeTeacherBtn = UIHelper.createToolbarBtn("Remove teacher", Resources.IMAGES.delete24(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent event) {
-                    fotiusService.removeTeacher(teachersGrid.getSelectionModel().getSelectedItem(), new AsyncCallback<Void>() {
+                    fotiusService.removeTeacher(getSelectedEntity(), new AsyncCallback<Void>() {
                         @Override
                         public void onFailure(Throwable caught) {
                             new MessageBox("Error", "Unable to remove teacher").show();
                         }
-
                         @Override
                         public void onSuccess(Void result) {
                             refresh();
@@ -200,28 +122,5 @@ public class TeachersWindow extends Window {
             });
         }
         return removeTeacherBtn;
-    }
-
-    private ToolBar getToolBar() {
-        if (toolBar == null) {
-            toolBar = new ToolBar();
-            toolBar.add(getAddTeacherBtn());
-            toolBar.add(getEditTeacherBtn());
-            toolBar.add(getRemoveTeacherBtn());
-//            removeTeacherBtn = new TextButton("Download list", Resources.IMAGES.arrow_down());
-//            removeTeacherBtn.setScale(ButtonCell.ButtonScale.LARGE);
-//            removeTeacherBtn.setIconAlign(ButtonCell.IconAlign.TOP);
-//            toolBar.add(removeTeacherBtn);
-//            removeTeacherBtn = new TextButton("Upload list", Resources.IMAGES.arrow_up());
-//            removeTeacherBtn.setScale(ButtonCell.ButtonScale.LARGE);
-//            removeTeacherBtn.setIconAlign(ButtonCell.IconAlign.TOP);
-//            toolBar.add(removeTeacherBtn);
-        }
-        return toolBar;
-    }
-
-
-    public void refresh() {
-        loader.load();
     }
 }

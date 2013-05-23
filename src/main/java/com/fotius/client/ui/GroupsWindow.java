@@ -11,6 +11,7 @@ import com.fotius.shared.model.StudentRole;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sencha.gxt.cell.core.client.ButtonCell;
@@ -36,106 +37,54 @@ import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class GroupsWindow extends Window {
+public class GroupsWindow extends BaseGridWindow<StudentGroup, StudentGroupProperties> {
+
     private static GroupsWindow instance = null;
     private final FotiusServiceAsync fotiusService = GWT.create(FotiusService.class);
-    private Grid<StudentGroup> groupsGrid;
     private TextButton addGroupBtn, editGroupBtn, removeGroupBtn;
-    private PagingToolBar toolbar;
-    private PagingLoader loader;
-    private ToolBar toolBar;
+    private final StudentGroupProperties props = GWT.create(StudentGroupProperties.class);
+
 
     public static GroupsWindow getInstance() {
         if (instance == null) {
-            instance = new GroupsWindow();
+            instance = new GroupsWindow("Groups", Resources.IMAGES.table());
         }
         return instance;
     }
 
-    public GroupsWindow() {
-        getHeader().setIcon(Resources.IMAGES.table());
-        setHeadingText("Groups");
-        setSize("500px", "400px");
-        setMaximizable(true);
-        setMinimizable(true);
-        ContentPanel mainPanel = new ContentPanel();
-        mainPanel.setHeaderVisible(false);
-        mainPanel.setWidget(getGridPanel());
-        add(mainPanel);
+    public GroupsWindow(String text, ImageResource icon) {
+        super(text, icon);
     }
 
-    public VerticalLayoutContainer getGridPanel() {
-        final FotiusServiceAsync fotiusService = GWT.create(FotiusService.class);
+    @Override
+    public void loadData(PagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<StudentGroup>> callback) {
+        fotiusService.getStudentGroups(loadConfig, callback);
+    }
 
-        RpcProxy<PagingLoadConfig, PagingLoadResult<StudentGroup>> proxy = new RpcProxy<PagingLoadConfig, PagingLoadResult<StudentGroup>>() {
-            @Override
-            public void load(PagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<StudentGroup>> callback) {
-                fotiusService.getStudentGroups(loadConfig, callback);
-            }
-        };
-
-        ListStore<StudentGroup> store = new ListStore<StudentGroup>(new ModelKeyProvider<StudentGroup>() {
-            @Override
-            public String getKey(StudentGroup studentGroup) {
-                return "" + studentGroup.getGroupId();
-            }
-        });
-        loader = new PagingLoader<PagingLoadConfig, PagingLoadResult<StudentGroup>>(
-                proxy);
-        loader.setRemoteSort(true);
-        loader.addLoadHandler(new LoadResultListStoreBinding<PagingLoadConfig, StudentGroup, PagingLoadResult<StudentGroup>>(store));
-
-        final PagingToolBar toolBar = new PagingToolBar(50);
-        toolBar.getElement().getStyle().setProperty("borderBottom", "none");
-        toolBar.bind(loader);
-
-        StudentGroupProperties props = GWT.create(StudentGroupProperties.class);
+    @Override
+    public List<ColumnConfig<StudentGroup, ?>> getColumnConfigs() {
         ColumnConfig<StudentGroup, String> nameColumn = new ColumnConfig<StudentGroup, String>(props.name(), 150, "name");
         List<ColumnConfig<StudentGroup, ?>> l = new ArrayList<ColumnConfig<StudentGroup, ?>>();
         l.add(nameColumn);
-        ColumnModel<StudentGroup> cm = new ColumnModel<StudentGroup>(l);
+        return l;
+    }
 
-        groupsGrid = new Grid<StudentGroup>(store, cm){
-            @Override
-            protected void onAfterFirstAttach() {
-                super.onAfterFirstAttach();
-                Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-                    @Override
-                    public void execute() {
-                        loader.load();
-                    }
-                });
-            }
-        };;
-        groupsGrid.setLoader(loader);
-        groupsGrid.setLoadMask(true);
-        groupsGrid.getView().setForceFit(true);
-        groupsGrid.addRowDoubleClickHandler(new RowDoubleClickEvent.RowDoubleClickHandler() {
-            @Override
-            public void onRowDoubleClick(RowDoubleClickEvent event) {
-                EditGroupWindow.getInstance().show();
-                StudentGroup group = groupsGrid.getStore().get(event.getRowIndex());
-                EditGroupWindow editGroupWindow = EditGroupWindow.getInstance();
-                editGroupWindow.fillGroupData(group);
-            }
-        });
+    @Override
+    public StudentGroupProperties getProperties() {
+        return props;
+    }
 
-        VerticalLayoutContainer con = new VerticalLayoutContainer();
-        con.setBorders(true);
-        con.add(getToolBar(), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
-        con.add(groupsGrid, new VerticalLayoutContainer.VerticalLayoutData(1, 1));
-        con.add(toolBar, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
-        return con;
+    @Override
+    public ModelKeyProvider<StudentGroup> getModelKey() {
+        return getProperties().groupId();
     }
 
     private TextButton getAddGroupBtn() {
         if (addGroupBtn == null) {
-            addGroupBtn = new TextButton("Add group", Resources.IMAGES.users_add_24());
-            addGroupBtn.setScale(ButtonCell.ButtonScale.LARGE);
-            addGroupBtn.setIconAlign(ButtonCell.IconAlign.TOP);
-            addGroupBtn.addSelectHandler(new SelectEvent.SelectHandler() {
+            addGroupBtn = UIHelper.createToolbarBtn("Add group", Resources.IMAGES.users_add_24(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent event) {
                     EditGroupWindow.getInstance().show();
@@ -147,13 +96,10 @@ public class GroupsWindow extends Window {
 
     private TextButton getEditGroupBtn() {
         if (editGroupBtn == null) {
-            editGroupBtn = new TextButton("Edit group", Resources.IMAGES.users_edit_24());
-            editGroupBtn.setScale(ButtonCell.ButtonScale.LARGE);
-            editGroupBtn.setIconAlign(ButtonCell.IconAlign.TOP);
-            editGroupBtn.addSelectHandler(new SelectEvent.SelectHandler() {
+            editGroupBtn = UIHelper.createToolbarBtn("Edit group", Resources.IMAGES.users_edit_24(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent selectEvent) {
-                    StudentGroup group = groupsGrid.getSelectionModel().getSelectedItem();
+                    StudentGroup group = getSelectedEntity();
                     if (group != null) {
                         EditGroupWindow.getInstance().fillGroupData(group);
                         EditGroupWindow.getInstance().show();
@@ -166,13 +112,10 @@ public class GroupsWindow extends Window {
 
     private TextButton getRemoveGroupBtn() {
         if (removeGroupBtn == null) {
-            removeGroupBtn = new TextButton("Remove group", Resources.IMAGES.delete24());
-            removeGroupBtn.setScale(ButtonCell.ButtonScale.LARGE);
-            removeGroupBtn.setIconAlign(ButtonCell.IconAlign.TOP);
-            removeGroupBtn.addSelectHandler(new SelectEvent.SelectHandler() {
+            removeGroupBtn = UIHelper.createToolbarBtn("Remove group", Resources.IMAGES.delete24(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent selectEvent) {
-                    StudentGroup group = groupsGrid.getSelectionModel().getSelectedItem();
+                    StudentGroup group = getSelectedEntity();
                     if (group != null) {
                         fotiusService.removeGroup(group, new AsyncCallback<Void>() {
                             @Override
@@ -193,18 +136,9 @@ public class GroupsWindow extends Window {
         return removeGroupBtn;
     }
 
-    private ToolBar getToolBar() {
-        if (toolBar == null) {
-            toolBar = new ToolBar();
-            toolBar.add(getAddGroupBtn());
-            toolBar.add(getEditGroupBtn());
-            toolBar.add(getRemoveGroupBtn());
-        }
-        return toolBar;
-    }
-
-    public void refresh() {
-        loader.load();
+    @Override
+    public List<TextButton> getToolbarButtons() {
+        return Arrays.asList(getAddGroupBtn(), getEditGroupBtn(), getRemoveGroupBtn());
     }
 
 }
