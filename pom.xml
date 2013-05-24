@@ -16,11 +16,6 @@
         </dependency>
         <dependency>
             <groupId>com.sencha.gxt</groupId>
-            <artifactId>gxt</artifactId>
-            <version>3.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sencha.gxt</groupId>
             <artifactId>gxt-chart</artifactId>
             <version>3.0.1</version>
         </dependency>
