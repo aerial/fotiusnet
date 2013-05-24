@@ -30,7 +30,7 @@ public class TeachersWindow extends BaseGridWindow<Teacher, TeacherProperties> {
 
     public static TeachersWindow getInstance() {
         if (instance == null) {
-            instance = new TeachersWindow("Teachers window", Resources.IMAGES.table());
+            instance = new TeachersWindow("Teachers window", Resources.IMAGES.hp_small());
         }
         return instance;
     }

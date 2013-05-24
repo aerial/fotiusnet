@@ -19,7 +19,6 @@ public class FotiusNet implements EntryPoint {
     private Desktop desktop;
 
     public void onModuleLoad() {
-        setBackground(RootPanel.get());
         new LoginWindow() {
             @Override
             public void onLoginSuccess(Teacher user) {
@@ -41,10 +40,11 @@ public class FotiusNet implements EntryPoint {
         desktop.addWindow(StudentsWindow.getInstance());
         desktop.addWindow(GroupsWindow.getInstance());
         desktop.setDesktopLayoutType(DesktopLayoutType.CASCADE);
+        setBackground(RootPanel.get());
         RootPanel.get().add(desktop.asWidget());
         Shortcut teachersShortcut = new Shortcut();
         teachersShortcut.setText("Teachers");
-        teachersShortcut.setIcon(Resources.IMAGES.user32());
+        teachersShortcut.setIcon(Resources.IMAGES.hp());
         teachersShortcut.addSelectHandler(new SelectEvent.SelectHandler() {
             @Override
             public void onSelect(SelectEvent selectEvent) {
@@ -56,7 +56,7 @@ public class FotiusNet implements EntryPoint {
 
         Shortcut studentsShortcut = new Shortcut();
         studentsShortcut.setText("Students");
-        studentsShortcut.setIcon(Resources.IMAGES.user32());
+        studentsShortcut.setIcon(Resources.IMAGES.hp());
         studentsShortcut.addSelectHandler(new SelectEvent.SelectHandler() {
             @Override
             public void onSelect(SelectEvent event) {
@@ -68,7 +68,7 @@ public class FotiusNet implements EntryPoint {
 
         Shortcut groupsShortcut = new Shortcut();
         groupsShortcut.setText("Groups");
-        groupsShortcut.setIcon(Resources.IMAGES.users32());
+        groupsShortcut.setIcon(Resources.IMAGES.group());
         groupsShortcut.addSelectHandler(new SelectEvent.SelectHandler() {
             @Override
             public void onSelect(SelectEvent event) {

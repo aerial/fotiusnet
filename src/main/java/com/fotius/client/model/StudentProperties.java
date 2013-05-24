@@ -1,8 +1,6 @@
 package com.fotius.client.model;
 
 import com.fotius.shared.model.Student;
-import com.fotius.shared.model.StudentGroup;
-import com.fotius.shared.model.StudentRole;
 import com.google.gwt.editor.client.Editor;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;

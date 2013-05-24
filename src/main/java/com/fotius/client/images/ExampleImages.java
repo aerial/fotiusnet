@@ -1,10 +1,3 @@
-/**
- * Sencha GXT 3.0.1 - Sencha for GWT
- * Copyright(c) 2007-2012, Sencha, Inc.
- * licensing@sencha.com
- *
- * http://www.sencha.com/products/gxt/license/
- */
 package com.fotius.client.images;
 
 import com.google.gwt.core.client.GWT;
@@ -83,13 +76,6 @@ public interface ExampleImages extends ClientBundle {
   @Source("text.png")
   ImageResource text();
 
-  @Source("plugin.png")
-  ImageResource plugin();
-  
-  @Source("music.png")
-  ImageResource music();
-  
-  
   @Source("user.png")
   ImageResource user();
 
@@ -108,21 +94,12 @@ public interface ExampleImages extends ClientBundle {
   @Source("users_delete24.gif")
   ImageResource users_delete_24();
 
-  @Source("user_kid.png")
-  ImageResource userKid();
-  
-  @Source("user_female.png")
-  ImageResource userFemale();
-  
   @Source("css.png")
   ImageResource css();
   
   @Source("java.png")
   ImageResource java();
-  
-  @Source("text.png")
-  ImageResource json();
-  
+
   @Source("html.png")
   ImageResource html();
   
@@ -131,4 +108,18 @@ public interface ExampleImages extends ClientBundle {
   
   @Source("folder.png")
   ImageResource folder();
+
+  @Source("user2.png")
+  ImageResource hp();
+
+  @Source("group.png")
+  ImageResource group();
+
+  @Source("user_small.png")
+  ImageResource hp_small();
+
+  @Source("group_small.png")
+  ImageResource group_small();
+
+
 }

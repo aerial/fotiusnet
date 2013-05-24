@@ -1,0 +1,7 @@
+.x-desktop {
+  background: #3d71b8 url(back2.jpg) no-repeat left top;
+}
+
+.x-taskbar {
+  background: url(taskbuttons-panel-bg.gif) repeat-x !important;  
+}

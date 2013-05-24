@@ -1,7 +1,5 @@
 package com.fotius.client.ui;
 
-import com.fotius.client.model.StudentProperties;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -25,7 +23,6 @@ import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseGridWindow<T, P extends PropertyAccess<T>> extends Window {
@@ -56,15 +53,14 @@ public abstract class BaseGridWindow<T, P extends PropertyAccess<T>> extends Win
 
     public abstract ModelKeyProvider<T> getModelKey();
 
-    public VerticalLayoutContainer getGridPanel() {
-        RpcProxy<PagingLoadConfig, PagingLoadResult<T>> proxy = new RpcProxy<PagingLoadConfig, PagingLoadResult<T>>() {
+    private VerticalLayoutContainer getGridPanel() {
+        RpcProxy<PagingLoadConfig, PagingLoadResult<T>> proxy = new RpcProxy<PagingLoadConfig,
+                PagingLoadResult<T>>() {
             @Override
             public void load(PagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<T>> callback) {
                 loadData(loadConfig, callback);
             }
         };
-
-        StudentProperties props = GWT.create(StudentProperties.class);
         ListStore<T> store = new ListStore<T>(getModelKey());
         loader = new PagingLoader<PagingLoadConfig, PagingLoadResult<T>>(
                 proxy);

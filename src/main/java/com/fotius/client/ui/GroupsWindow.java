@@ -50,7 +50,7 @@ public class GroupsWindow extends BaseGridWindow<StudentGroup, StudentGroupPrope
 
     public static GroupsWindow getInstance() {
         if (instance == null) {
-            instance = new GroupsWindow("Groups", Resources.IMAGES.table());
+            instance = new GroupsWindow("Groups", Resources.IMAGES.group_small());
         }
         return instance;
     }
