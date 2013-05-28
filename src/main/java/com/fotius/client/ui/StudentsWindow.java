@@ -1,5 +1,6 @@
 package com.fotius.client.ui;
 
+import com.fotius.client.FotiusnetConstants;
 import com.fotius.client.Resources;
 import com.fotius.client.model.StudentProperties;
 import com.fotius.client.service.FotiusService;
@@ -23,13 +24,14 @@ import java.util.List;
 public class StudentsWindow extends BaseGridWindow<Student, StudentProperties> {
 
     private static StudentsWindow instance = null;
+    private static FotiusnetConstants constants = GWT.create(FotiusnetConstants.class);
     private final StudentProperties props = GWT.create(StudentProperties.class);
     private final FotiusServiceAsync fotiusService = GWT.create(FotiusService.class);
     private TextButton addStudentBtn, editStudentBtn, removeStudentBtn;
 
     public static StudentsWindow getInstance() {
         if (instance == null) {
-            instance = new StudentsWindow("Students window", Resources.IMAGES.hp_small());
+            instance = new StudentsWindow(constants.studentsWindowCaption(), Resources.IMAGES.hp_small());
         }
         return instance;
     }
@@ -45,11 +47,11 @@ public class StudentsWindow extends BaseGridWindow<Student, StudentProperties> {
 
     @Override
     public List<ColumnConfig<Student, ?>> getColumnConfigs() {
-        ColumnConfig<Student, String> nameColumn = new ColumnConfig<Student, String>(getProperties().name(), 150, "name");
-        ColumnConfig<Student, String> loginColumn = new ColumnConfig<Student, String>(getProperties().login(), 150, "login");
-        ColumnConfig<Student, String> passwordConfig = new ColumnConfig<Student, String>(getProperties().password(), 150, "pass");
-        ColumnConfig<Student, String> groupConfig = new ColumnConfig<Student, String>(getProperties().studentGroup(), 150, "group");
-        ColumnConfig<Student, String> roleConfig = new ColumnConfig<Student, String>(getProperties().role(), 150, "role");
+        ColumnConfig<Student, String> nameColumn = new ColumnConfig<Student, String>(getProperties().name(), 150, constants.studentName());
+        ColumnConfig<Student, String> loginColumn = new ColumnConfig<Student, String>(getProperties().login(), 150, constants.studentLogin());
+        ColumnConfig<Student, String> passwordConfig = new ColumnConfig<Student, String>(getProperties().password(), 150, constants.studentPassword());
+        ColumnConfig<Student, String> groupConfig = new ColumnConfig<Student, String>(getProperties().studentGroup(), 150, constants.studentGroup());
+        ColumnConfig<Student, String> roleConfig = new ColumnConfig<Student, String>(getProperties().role(), 150, constants.studentRole());
         List<ColumnConfig<Student, ?>> l = new ArrayList<ColumnConfig<Student, ?>>();
         l.add(nameColumn);
         l.add(loginColumn);
@@ -71,7 +73,7 @@ public class StudentsWindow extends BaseGridWindow<Student, StudentProperties> {
 
     private TextButton getAddStudentButton() {
         if (addStudentBtn == null) {
-            addStudentBtn = UIHelper.createToolbarBtn("Add", Resources.IMAGES.add24(), new SelectEvent.SelectHandler() {
+            addStudentBtn = UIHelper.createToolbarBtn(constants.addStudent(), Resources.IMAGES.add24(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent event) {
                     EditStudentWindow.getInstance().show();
@@ -83,7 +85,7 @@ public class StudentsWindow extends BaseGridWindow<Student, StudentProperties> {
 
     private TextButton getEditStudentBtn() {
         if (editStudentBtn == null) {
-            editStudentBtn = UIHelper.createToolbarBtn("Edit", Resources.IMAGES.edit24(), new SelectEvent.SelectHandler() {
+            editStudentBtn = UIHelper.createToolbarBtn(constants.editStudent(), Resources.IMAGES.edit24(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent event) {
                     EditStudentWindow studentWindow = EditStudentWindow.getInstance();
@@ -101,7 +103,7 @@ public class StudentsWindow extends BaseGridWindow<Student, StudentProperties> {
 
     private TextButton getRemoveStudentBtn() {
         if (removeStudentBtn == null) {
-            removeStudentBtn = UIHelper.createToolbarBtn("Remove", Resources.IMAGES.delete24(), new SelectEvent.SelectHandler() {
+            removeStudentBtn = UIHelper.createToolbarBtn(constants.removeStudent(), Resources.IMAGES.delete24(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent event) {
                     fotiusService.removeStudent(getSelectedEntity(), new AsyncCallback<Void>() {

@@ -6,6 +6,7 @@ import com.fotius.client.ui.*;
 import com.fotius.shared.model.Teacher;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.UIObject;
@@ -17,6 +18,7 @@ import com.sencha.gxt.widget.core.client.info.Info;
 public class FotiusNet implements EntryPoint {
 
     private Desktop desktop;
+    private FotiusnetConstants constants = GWT.create(FotiusnetConstants.class);
 
     public void onModuleLoad() {
         new LoginWindow() {
@@ -43,19 +45,30 @@ public class FotiusNet implements EntryPoint {
         setBackground(RootPanel.get());
         RootPanel.get().add(desktop.asWidget());
         Shortcut teachersShortcut = new Shortcut();
-        teachersShortcut.setText("Teachers");
+        teachersShortcut.setText(constants.teachers());
         teachersShortcut.setIcon(Resources.IMAGES.hp());
         teachersShortcut.addSelectHandler(new SelectEvent.SelectHandler() {
             @Override
             public void onSelect(SelectEvent selectEvent) {
-                TeachersWindow.getInstance().show();
-                Info.display("Teachers window", "displayed");
+                GWT.runAsync(new RunAsyncCallback() {
+                    @Override
+                    public void onFailure(Throwable reason) {
+
+                    }
+
+                    @Override
+                    public void onSuccess() {
+                        TeachersWindow.getInstance().show();
+                        Info.display("Teachers window", "displayed");
+                    }
+                });
+
             }
         });
         desktop.addShortcut(teachersShortcut);
 
         Shortcut studentsShortcut = new Shortcut();
-        studentsShortcut.setText("Students");
+        studentsShortcut.setText(constants.students());
         studentsShortcut.setIcon(Resources.IMAGES.hp());
         studentsShortcut.addSelectHandler(new SelectEvent.SelectHandler() {
             @Override
@@ -67,7 +80,7 @@ public class FotiusNet implements EntryPoint {
         desktop.addShortcut(studentsShortcut);
 
         Shortcut groupsShortcut = new Shortcut();
-        groupsShortcut.setText("Groups");
+        groupsShortcut.setText(constants.groups());
         groupsShortcut.setIcon(Resources.IMAGES.group());
         groupsShortcut.addSelectHandler(new SelectEvent.SelectHandler() {
             @Override

@@ -1,5 +1,6 @@
 package com.fotius.client.ui;
 
+import com.fotius.client.FotiusnetConstants;
 import com.fotius.client.Resources;
 import com.fotius.client.model.StudentGroupProperties;
 import com.fotius.client.model.StudentProperties;
@@ -46,11 +47,11 @@ public class GroupsWindow extends BaseGridWindow<StudentGroup, StudentGroupPrope
     private final FotiusServiceAsync fotiusService = GWT.create(FotiusService.class);
     private TextButton addGroupBtn, editGroupBtn, removeGroupBtn;
     private final StudentGroupProperties props = GWT.create(StudentGroupProperties.class);
-
+    private static FotiusnetConstants constants = GWT.create(FotiusnetConstants.class);
 
     public static GroupsWindow getInstance() {
         if (instance == null) {
-            instance = new GroupsWindow("Groups", Resources.IMAGES.group_small());
+            instance = new GroupsWindow(constants.groupsWindowCaption(), Resources.IMAGES.group_small());
         }
         return instance;
     }
@@ -66,7 +67,7 @@ public class GroupsWindow extends BaseGridWindow<StudentGroup, StudentGroupPrope
 
     @Override
     public List<ColumnConfig<StudentGroup, ?>> getColumnConfigs() {
-        ColumnConfig<StudentGroup, String> nameColumn = new ColumnConfig<StudentGroup, String>(props.name(), 150, "name");
+        ColumnConfig<StudentGroup, String> nameColumn = new ColumnConfig<StudentGroup, String>(props.name(), 150, constants.groupName());
         List<ColumnConfig<StudentGroup, ?>> l = new ArrayList<ColumnConfig<StudentGroup, ?>>();
         l.add(nameColumn);
         return l;
@@ -84,7 +85,7 @@ public class GroupsWindow extends BaseGridWindow<StudentGroup, StudentGroupPrope
 
     private TextButton getAddGroupBtn() {
         if (addGroupBtn == null) {
-            addGroupBtn = UIHelper.createToolbarBtn("Add group", Resources.IMAGES.users_add_24(), new SelectEvent.SelectHandler() {
+            addGroupBtn = UIHelper.createToolbarBtn(constants.addGroup(), Resources.IMAGES.users_add_24(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent event) {
                     EditGroupWindow.getInstance().show();
@@ -96,7 +97,7 @@ public class GroupsWindow extends BaseGridWindow<StudentGroup, StudentGroupPrope
 
     private TextButton getEditGroupBtn() {
         if (editGroupBtn == null) {
-            editGroupBtn = UIHelper.createToolbarBtn("Edit group", Resources.IMAGES.users_edit_24(), new SelectEvent.SelectHandler() {
+            editGroupBtn = UIHelper.createToolbarBtn(constants.editGroup(), Resources.IMAGES.users_edit_24(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent selectEvent) {
                     StudentGroup group = getSelectedEntity();
@@ -112,7 +113,7 @@ public class GroupsWindow extends BaseGridWindow<StudentGroup, StudentGroupPrope
 
     private TextButton getRemoveGroupBtn() {
         if (removeGroupBtn == null) {
-            removeGroupBtn = UIHelper.createToolbarBtn("Remove group", Resources.IMAGES.delete24(), new SelectEvent.SelectHandler() {
+            removeGroupBtn = UIHelper.createToolbarBtn(constants.removeGroup(), Resources.IMAGES.delete24(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent selectEvent) {
                     StudentGroup group = getSelectedEntity();
