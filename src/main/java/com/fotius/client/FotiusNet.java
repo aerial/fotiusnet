@@ -4,6 +4,7 @@ import com.fotius.client.service.FotiusService;
 import com.fotius.client.service.FotiusServiceAsync;
 import com.fotius.client.ui.*;
 import com.fotius.shared.model.Teacher;
+import com.fotius.shared.model.User;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
@@ -23,7 +24,7 @@ public class FotiusNet implements EntryPoint {
     public void onModuleLoad() {
         new LoginWindow() {
             @Override
-            public void onLoginSuccess(Teacher user) {
+            public void onLoginSuccess(User user) {
                 Info.display("Login succeed", "Login: " + user.getLogin() + " Password: " + user.getPassword() );
                 initDesktop();
             }

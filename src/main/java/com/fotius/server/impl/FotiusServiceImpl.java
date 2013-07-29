@@ -16,6 +16,8 @@ public class FotiusServiceImpl extends RemoteServiceServlet
 
     private HibernateUtil hibernateUtil = new HibernateUtil();
 
+
+
     @Override
     public Teacher loginAsTeacher(String login, String password) {
         Session session = hibernateUtil.getSessionFactory().getCurrentSession();
@@ -44,6 +46,23 @@ public class FotiusServiceImpl extends RemoteServiceServlet
                 return null;
             } else {
                 return (Student)query.list().get(0);
+            }
+        } finally {
+            session.getTransaction().commit();
+        }
+    }
+
+    @Override
+    public User login(String login, String password) {
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            session.beginTransaction();
+            String sql = " from User where login = '" + login + "' and password = '" + password + "'";
+            Query query = session.createQuery(sql);
+            if (query.list().size() == 0) {
+                return null;
+            } else {
+                return (User)query.list().get(0);
             }
         } finally {
             session.getTransaction().commit();

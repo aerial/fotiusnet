@@ -191,7 +191,7 @@ public class EditStudentWindow extends Window {
 
                             @Override
                             public void onSuccess(Student result) {
-                                Info.display("Student saved with ID", String.valueOf(result.getStudentId()));
+                                Info.display("Student saved with ID", String.valueOf(result.getUserId()));
                                 EditStudentWindow.getInstance().hide();
                                 StudentsWindow.getInstance().refresh();
                             }

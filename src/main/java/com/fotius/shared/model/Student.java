@@ -4,16 +4,12 @@ import com.google.gwt.user.client.rpc.GwtTransient;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "students")
-@SequenceGenerator(name = "students_sequence", sequenceName = "students_sequence", allocationSize = 1)
-public class Student implements Serializable{
-    @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "students_sequence")
-    @Column(name = "student_id")
-    private Long studentId;
-    private String name, login, password;
+@PrimaryKeyJoinColumn(name = "user_id")
+public class Student extends User implements Serializable {
 
     @ManyToOne( cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
     @JoinColumn(name = "roleid")
@@ -22,38 +18,6 @@ public class Student implements Serializable{
     @ManyToOne( cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
     @JoinColumn(name = "groupid")
     private StudentGroup studentGroup;
-
-    public Long getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(Long id) {
-        this.studentId = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public StudentRole getRole() {
         return studentRole;

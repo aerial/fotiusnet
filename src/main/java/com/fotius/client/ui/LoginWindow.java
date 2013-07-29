@@ -4,6 +4,7 @@ import com.fotius.client.Resources;
 import com.fotius.client.service.FotiusService;
 import com.fotius.client.service.FotiusServiceAsync;
 import com.fotius.shared.model.Teacher;
+import com.fotius.shared.model.User;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sencha.gxt.widget.core.client.Status;
@@ -54,7 +55,7 @@ public abstract class LoginWindow extends Window {
         addButton(getLoginBtn());
     }
 
-    public abstract void onLoginSuccess(Teacher user);
+    public abstract void onLoginSuccess(User user);
 
     private TextButton getLoginBtn() {
         loginBtn = new TextButton("Login");
@@ -69,13 +70,13 @@ public abstract class LoginWindow extends Window {
     protected void onSubmit() {
         status.show();
         getButtonBar().disable();
-        fotiusService.loginAsTeacher(userNameTxt.getText(), passwordTxt.getText(), new AsyncCallback<Teacher>() {
+        fotiusService.login(userNameTxt.getText(), passwordTxt.getText(), new AsyncCallback<User>() {
             @Override
             public void onFailure(Throwable caught) {
             }
 
             @Override
-            public void onSuccess(Teacher result) {
+            public void onSuccess(User result) {
                 if (result != null) {
                     LoginWindow.this.hide();
                     onLoginSuccess(result);

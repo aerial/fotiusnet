@@ -7,7 +7,7 @@ import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
 
 public interface StudentProperties extends PropertyAccess<Student> {
-    ModelKeyProvider<Student> studentId();
+    ModelKeyProvider<Student> userId();
     ValueProvider<Student, String> name();
     ValueProvider<Student, String> login();
     ValueProvider<Student, String> password();

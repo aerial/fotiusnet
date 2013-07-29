@@ -68,7 +68,7 @@ public class StudentsWindow extends BaseGridWindow<Student, StudentProperties> {
 
     @Override
     public ModelKeyProvider<Student> getModelKey() {
-        return getProperties().studentId();
+        return getProperties().userId();
     }
 
     private TextButton getAddStudentButton() {

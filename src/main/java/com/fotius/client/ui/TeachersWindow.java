@@ -68,7 +68,7 @@ public class TeachersWindow extends BaseGridWindow<Teacher, TeacherProperties> {
 
     @Override
     public ModelKeyProvider<Teacher> getModelKey() {
-        return props.teacherId();
+        return props.userId();
     }
 
     @Override

@@ -25,6 +25,8 @@ public interface FotiusServiceAsync {
 
     void loginAsStudent(String login, String password, AsyncCallback<Student> async);
 
+    void login(String login, String password, AsyncCallback<User> async);
+
     void getStudents(PagingLoadConfig config, AsyncCallback<PagingLoadResult<Student>> async);
 
     void getTeacherRoles(PagingLoadConfig config, AsyncCallback<PagingLoadResult<TeacherRole>> async);

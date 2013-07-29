@@ -17,6 +17,8 @@ public interface FotiusService extends RemoteService {
 
     Student loginAsStudent(String login, String password);
 
+    User login(String login, String password);
+
     PagingLoadResult<Teacher> getTeachers(PagingLoadConfig config);
 
     PagingLoadResult<Student> getStudents(PagingLoadConfig config);

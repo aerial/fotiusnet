@@ -152,7 +152,7 @@ public class EditTeacherWindow extends Window {
 
                             @Override
                             public void onSuccess(Teacher result) {
-                                Info.display("Teacher saved", String.valueOf(result.getTeacherId()));
+                                Info.display("Teacher saved", String.valueOf(result.getUserId()));
                                 EditTeacherWindow.getInstance().hide();
                                 TeachersWindow.getInstance().refresh();
                             }
