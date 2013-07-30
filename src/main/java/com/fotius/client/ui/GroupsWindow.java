@@ -83,6 +83,15 @@ public class GroupsWindow extends BaseGridWindow<StudentGroup, StudentGroupPrope
         return getProperties().groupId();
     }
 
+    @Override
+    public void editEntity() {
+        StudentGroup group = getSelectedEntity();
+        if (group != null) {
+            EditGroupWindow.getInstance().fillGroupData(group);
+            EditGroupWindow.getInstance().show();
+        }
+    }
+
     private TextButton getAddGroupBtn() {
         if (addGroupBtn == null) {
             addGroupBtn = UIHelper.createToolbarBtn(constants.addGroup(), Resources.IMAGES.users_add_24(), new SelectEvent.SelectHandler() {
@@ -100,11 +109,7 @@ public class GroupsWindow extends BaseGridWindow<StudentGroup, StudentGroupPrope
             editGroupBtn = UIHelper.createToolbarBtn(constants.editGroup(), Resources.IMAGES.users_edit_24(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent selectEvent) {
-                    StudentGroup group = getSelectedEntity();
-                    if (group != null) {
-                        EditGroupWindow.getInstance().fillGroupData(group);
-                        EditGroupWindow.getInstance().show();
-                    }
+                    editEntity();
                 }
             });
         }

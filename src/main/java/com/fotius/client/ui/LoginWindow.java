@@ -1,6 +1,7 @@
 package com.fotius.client.ui;
 
 import com.fotius.client.Resources;
+import com.fotius.client.Session;
 import com.fotius.client.service.FotiusService;
 import com.fotius.client.service.FotiusServiceAsync;
 import com.fotius.shared.model.Teacher;
@@ -78,6 +79,7 @@ public abstract class LoginWindow extends Window {
             @Override
             public void onSuccess(User result) {
                 if (result != null) {
+                    Session.authorize(result);
                     LoginWindow.this.hide();
                     onLoginSuccess(result);
                 } else {

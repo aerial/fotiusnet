@@ -16,42 +16,6 @@ public class FotiusServiceImpl extends RemoteServiceServlet
 
     private HibernateUtil hibernateUtil = new HibernateUtil();
 
-
-
-    @Override
-    public Teacher loginAsTeacher(String login, String password) {
-        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
-        try {
-            session.beginTransaction();
-            String sql = " from Teacher where login = '" + login + "' and password = '" + password + "'";
-            Query query = session.createQuery(sql);
-            if (query.list().size() == 0) {
-                return null;
-            } else {
-                return (Teacher)query.list().get(0);
-            }
-        } finally {
-            session.getTransaction().commit();
-        }
-    }
-
-    @Override
-    public Student loginAsStudent(String login, String password) {
-        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
-        try {
-            session.beginTransaction();
-            String sql = " from Student where login = " + login + " and password = " + password;
-            Query query = session.createQuery(sql);
-            if (query.list().size() == 0) {
-                return null;
-            } else {
-                return (Student)query.list().get(0);
-            }
-        } finally {
-            session.getTransaction().commit();
-        }
-    }
-
     @Override
     public User login(String login, String password) {
         Session session = hibernateUtil.getSessionFactory().getCurrentSession();
@@ -173,6 +137,19 @@ public class FotiusServiceImpl extends RemoteServiceServlet
     }
 
     @Override
+    public List<User> getUsers() {
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            String sql = " from User ";
+            final Query query = session.createQuery(sql);
+            List<User> result = query.list();
+            return result;
+        } finally {
+            session.getTransaction().commit();
+        }
+    }
+
+    @Override
     public PagingLoadResult<StudentGroup> getStudentGroups(PagingLoadConfig config) {
         Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         try {
@@ -280,6 +257,48 @@ public class FotiusServiceImpl extends RemoteServiceServlet
             final Query query = session.createQuery(sql);
             List<StudentRole> result = query.list();
             PagingLoadResultBean<StudentRole> bean = new PagingLoadResultBean(result, result.size(), 0);
+            return bean;
+        } finally {
+            session.getTransaction().commit();
+        }
+    }
+
+    @Override
+    public Message sendMessage(Message msg) {
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            session.beginTransaction();
+            Message sentMessage = (Message)session.merge(msg);
+            return sentMessage;
+        } finally {
+            session.getTransaction().commit();
+        }
+    }
+
+    @Override
+    public PagingLoadResult<Message> getInbox(User user, PagingLoadConfig config) {
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            session.beginTransaction();
+            String sql = " from Message where recipient_id = " + user.getUserId();
+            final Query query = session.createQuery(sql);
+            List<Message> result = query.list();
+            PagingLoadResultBean<Message> bean = new PagingLoadResultBean(result, result.size(), 0);
+            return bean;
+        } finally {
+            session.getTransaction().commit();
+        }
+    }
+
+    @Override
+    public PagingLoadResult<Message> getOutbox(User user, PagingLoadConfig config) {
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            session.beginTransaction();
+            String sql = " from Message where senderId = " + user.getUserId();
+            final Query query = session.createQuery(sql);
+            List<Message> result = query.list();
+            PagingLoadResultBean<Message> bean = new PagingLoadResultBean(result, result.size(), 0);
             return bean;
         } finally {
             session.getTransaction().commit();

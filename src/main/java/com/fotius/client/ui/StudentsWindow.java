@@ -71,6 +71,16 @@ public class StudentsWindow extends BaseGridWindow<Student, StudentProperties> {
         return getProperties().userId();
     }
 
+    @Override
+    public void editEntity() {
+        EditStudentWindow studentWindow = EditStudentWindow.getInstance();
+        Student student = getSelectedEntity();
+        if (student != null) {
+            studentWindow.fillStudentData(student);
+            studentWindow.show();
+        }
+    }
+
     private TextButton getAddStudentButton() {
         if (addStudentBtn == null) {
             addStudentBtn = UIHelper.createToolbarBtn(constants.addStudent(), Resources.IMAGES.add24(), new SelectEvent.SelectHandler() {
@@ -88,12 +98,7 @@ public class StudentsWindow extends BaseGridWindow<Student, StudentProperties> {
             editStudentBtn = UIHelper.createToolbarBtn(constants.editStudent(), Resources.IMAGES.edit24(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent event) {
-                    EditStudentWindow studentWindow = EditStudentWindow.getInstance();
-                    Student student = getSelectedEntity();
-                    if (student != null) {
-                        studentWindow.fillStudentData(student);
-                    }
-                    studentWindow.show();
+                    editEntity();
                 }
             });
         }

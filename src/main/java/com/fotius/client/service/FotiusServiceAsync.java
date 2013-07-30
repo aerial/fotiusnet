@@ -21,13 +21,11 @@ public interface FotiusServiceAsync {
 
     void getTeachers(PagingLoadConfig config, AsyncCallback<PagingLoadResult<Teacher>> async);
 
-    void loginAsTeacher(String login, String password, AsyncCallback<Teacher> async);
-
-    void loginAsStudent(String login, String password, AsyncCallback<Student> async);
-
     void login(String login, String password, AsyncCallback<User> async);
 
     void getStudents(PagingLoadConfig config, AsyncCallback<PagingLoadResult<Student>> async);
+
+    void getUsers(AsyncCallback<List<User>> async);
 
     void getTeacherRoles(PagingLoadConfig config, AsyncCallback<PagingLoadResult<TeacherRole>> async);
 
@@ -38,4 +36,10 @@ public interface FotiusServiceAsync {
     void saveStudentGroup(StudentGroup group, AsyncCallback<StudentGroup> async);
 
     void removeGroup(StudentGroup group, AsyncCallback<Void> async);
+
+    void sendMessage(Message msg, AsyncCallback<Message> async);
+
+    void getInbox(User user, PagingLoadConfig config, AsyncCallback<PagingLoadResult<Message>> async);
+
+    void getOutbox(User user, PagingLoadConfig config, AsyncCallback<PagingLoadResult<Message>> async);
 }

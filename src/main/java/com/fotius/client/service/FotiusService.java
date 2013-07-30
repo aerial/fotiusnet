@@ -13,15 +13,13 @@ import java.util.List;
 @RemoteServiceRelativePath("fotius")
 public interface FotiusService extends RemoteService {
 
-    Teacher loginAsTeacher(String login, String password);
-
-    Student loginAsStudent(String login, String password);
-
     User login(String login, String password);
 
     PagingLoadResult<Teacher> getTeachers(PagingLoadConfig config);
 
     PagingLoadResult<Student> getStudents(PagingLoadConfig config);
+
+    List<User> getUsers();
 
     PagingLoadResult<StudentGroup> getStudentGroups(PagingLoadConfig config);
 
@@ -40,4 +38,10 @@ public interface FotiusService extends RemoteService {
     PagingLoadResult<TeacherRole> getTeacherRoles(PagingLoadConfig config);
 
     PagingLoadResult<StudentRole> getStudentRoles(PagingLoadConfig config);
+
+    Message sendMessage(Message msg);
+
+    PagingLoadResult<Message> getInbox(User user, PagingLoadConfig config);
+
+    PagingLoadResult<Message> getOutbox(User user, PagingLoadConfig config);
 }

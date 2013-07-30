@@ -53,6 +53,8 @@ public abstract class BaseGridWindow<T, P extends PropertyAccess<T>> extends Win
 
     public abstract ModelKeyProvider<T> getModelKey();
 
+    public abstract void editEntity();
+
     private VerticalLayoutContainer getGridPanel() {
         RpcProxy<PagingLoadConfig, PagingLoadResult<T>> proxy = new RpcProxy<PagingLoadConfig,
                 PagingLoadResult<T>>() {
@@ -90,7 +92,7 @@ public abstract class BaseGridWindow<T, P extends PropertyAccess<T>> extends Win
         grid.addRowDoubleClickHandler(new RowDoubleClickEvent.RowDoubleClickHandler() {
             @Override
             public void onRowDoubleClick(RowDoubleClickEvent event) {
-                Info.display("Edit window show", "yeah");
+                editEntity();
             }
         });
         VerticalLayoutContainer con = new VerticalLayoutContainer();

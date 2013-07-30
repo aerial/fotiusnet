@@ -91,5 +91,17 @@ public class FotiusNet implements EntryPoint {
             }
         });
         desktop.addShortcut(groupsShortcut);
+
+        Shortcut msgsShortCut = new Shortcut();
+        msgsShortCut.setText("msgs");
+        msgsShortCut.setIcon(Resources.IMAGES.group());
+        msgsShortCut.addSelectHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent event) {
+                MessagesWindow.getInstance().show();
+                Info.display("Msgs window", "displayed");
+            }
+        });
+        desktop.addShortcut(msgsShortCut);
     }
 }

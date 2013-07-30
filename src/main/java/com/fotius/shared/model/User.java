@@ -26,18 +26,6 @@ public class User implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(cascade = {CascadeType.ALL},
-            fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id")
-    @GwtTransient
-    private List<Message> sentMessages;
-
-    @OneToMany(cascade = {CascadeType.ALL},
-            fetch = FetchType.LAZY)
-    @JoinColumn(name = "recipient_id")
-    @GwtTransient
-    private List<Message> receivedMessages;
-
     public Long getUserId() {
         return userId;
     }

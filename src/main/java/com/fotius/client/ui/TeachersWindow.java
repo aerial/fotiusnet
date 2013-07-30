@@ -72,6 +72,16 @@ public class TeachersWindow extends BaseGridWindow<Teacher, TeacherProperties> {
     }
 
     @Override
+    public void editEntity() {
+        EditTeacherWindow teacherWindow = EditTeacherWindow.getInstance();
+        Teacher teacher = getSelectedEntity();
+        if (teacher != null) {
+            teacherWindow.fillTeacherData(teacher);
+            teacherWindow.show();
+        }
+    }
+
+    @Override
     public List<TextButton> getToolbarButtons() {
         return Arrays.asList(getAddTeacherBtn(), getEditTeacherBtn(), getRemoveTeacherBtn());
     }
@@ -93,12 +103,7 @@ public class TeachersWindow extends BaseGridWindow<Teacher, TeacherProperties> {
             editTeacherBtn = UIHelper.createToolbarBtn(constants.editTeacher(), Resources.IMAGES.edit24(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent selectEvent) {
-                    EditTeacherWindow teacherWindow = EditTeacherWindow.getInstance();
-                    Teacher teacher = getSelectedEntity();
-                    if (teacher != null) {
-                        teacherWindow.fillTeacherData(teacher);
-                    }
-                    teacherWindow.show();
+                    editEntity();
                 }
             });
         }
