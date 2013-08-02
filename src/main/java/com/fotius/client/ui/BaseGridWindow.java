@@ -39,10 +39,15 @@ public abstract class BaseGridWindow<T, P extends PropertyAccess<T>> extends Win
         setSize(WIDTH, HEIGHT);
         setMaximizable(true);
         setMinimizable(true);
+    }
+
+    @Override
+    public void show() {
         ContentPanel mainPanel = new ContentPanel();
         mainPanel.setHeaderVisible(false);
         mainPanel.setWidget(getGridPanel());
         add(mainPanel);
+        super.show();
     }
 
     public abstract void loadData(PagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<T>> callback);

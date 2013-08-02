@@ -140,6 +140,7 @@ public class FotiusServiceImpl extends RemoteServiceServlet
     public List<User> getUsers() {
         Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         try {
+            session.beginTransaction();
             String sql = " from User ";
             final Query query = session.createQuery(sql);
             List<User> result = query.list();

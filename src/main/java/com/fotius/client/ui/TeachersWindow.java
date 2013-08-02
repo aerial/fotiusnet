@@ -25,7 +25,7 @@ public class TeachersWindow extends BaseGridWindow<Teacher, TeacherProperties> {
 
     public static TeachersWindow instance = null;
     private static FotiusnetConstants constants = GWT.create(FotiusnetConstants.class);
-    private final TeacherProperties props = GWT.create(TeacherProperties.class);
+    private static final TeacherProperties props = GWT.create(TeacherProperties.class);
     private final FotiusServiceAsync fotiusService = GWT.create(FotiusService.class);
     private TextButton addTeacherBtn, editTeacherBtn, removeTeacherBtn;
 

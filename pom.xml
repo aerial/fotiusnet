@@ -48,6 +48,7 @@
                 </executions>
                 <configuration>
                     <runTarget>FotiusNet.html</runTarget>
+                    <style>PRETTY</style>
                     <extraJvmArgs>-XX:MaxPermSize=512m -Xmx512m</extraJvmArgs>
                 </configuration>
             </plugin>
