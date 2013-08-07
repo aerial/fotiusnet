@@ -8,11 +8,13 @@ import com.fotius.shared.model.User;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
+import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.sencha.gxt.desktop.client.layout.DesktopLayoutType;
 import com.sencha.gxt.desktop.client.widget.*;
+import com.sencha.gxt.desktop.client.widget.Desktop;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.info.Info;
 
@@ -25,7 +27,9 @@ public class FotiusNet implements EntryPoint {
         new LoginWindow() {
             @Override
             public void onLoginSuccess(User user) {
+                new Frame(MyResources.INSTANCE.ownersManual().getUrl());
                 Info.display("Login succeed", "Login: " + user.getLogin() + " Password: " + user.getPassword() );
+
                 initDesktop();
             }
         }.show();

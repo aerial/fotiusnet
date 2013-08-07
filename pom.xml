@@ -17,7 +17,17 @@
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-            <version>2.5.0</version>
+            <version>2.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <version>2.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-codeserver</artifactId>
+            <version>2.5.1</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -50,6 +60,8 @@
                     <runTarget>FotiusNet.html</runTarget>
                     <style>PRETTY</style>
                     <extraJvmArgs>-XX:MaxPermSize=512m -Xmx512m</extraJvmArgs>
+                    <draftCompile>true</draftCompile>
+                    <module>com.fotius.FotiusNet</module>
                 </configuration>
             </plugin>
             <plugin>

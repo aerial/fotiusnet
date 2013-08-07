@@ -11,4 +11,11 @@
   <source path='client'/>
   <source path='shared'/>
 
+  <!--superdevmode support-->
+  <add-linker name="xsiframe"/>
+
+  <set-configuration-property name="devModeRedirectEnabled" value="true"/>
+
+  <set-property name="compiler.useSourceMaps" value="true" />
+
 </module>
