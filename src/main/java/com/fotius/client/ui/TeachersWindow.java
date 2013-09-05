@@ -91,6 +91,7 @@ public class TeachersWindow extends BaseGridWindow<Teacher, TeacherProperties> {
             addTeacherBtn = UIHelper.createToolbarBtn(constants.addTeacher(), Resources.IMAGES.add24(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent event) {
+                    EditTeacherWindow.getInstance().fillTeacherData(new Teacher());
                     EditTeacherWindow.getInstance().show();
                 }
             });

@@ -17,11 +17,12 @@ public interface ExampleImages extends ClientBundle {
   @Source("add32.gif")
   ImageResource add32();
 
-    @Source("arrow_up_green.gif")
-    ImageResource arrow_up();
+  @Source("arrow_up_green.gif")
+  ImageResource arrow_up();
 
-    @Source("arrow_down_green.gif")
-    ImageResource arrow_down();
+  @Source("arrow_down_green.gif")
+  ImageResource arrow_down();
+
   @Source("edit24.gif")
   ImageResource edit24();
 
@@ -109,10 +110,10 @@ public interface ExampleImages extends ClientBundle {
   @Source("folder.png")
   ImageResource folder();
 
-  @Source("user2.png")
+  @Source("gnome-session.png")
   ImageResource hp();
 
-  @Source("group.png")
+  @Source("stock_people.png")
   ImageResource group();
 
   @Source("user_small.png")
@@ -120,6 +121,4 @@ public interface ExampleImages extends ClientBundle {
 
   @Source("group_small.png")
   ImageResource group_small();
-
-
 }

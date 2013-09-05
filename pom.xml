@@ -7,7 +7,6 @@
     <artifactId>Fotiusnet</artifactId>
     <packaging>war</packaging>
     <version>0.1</version>
-
     <dependencies>
         <dependency>
             <groupId>com.sencha.gxt</groupId>
@@ -17,11 +16,6 @@
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-            <version>2.5.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-dev</artifactId>
             <version>2.5.1</version>
         </dependency>
         <dependency>
@@ -51,8 +45,6 @@
                     <execution>
                         <goals>
                             <goal>compile</goal>
-                            <!--<goal>generateAsync</goal>-->
-                            <!--<goal>test</goal>-->
                         </goals>
                     </execution>
                 </executions>

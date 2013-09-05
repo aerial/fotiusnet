@@ -27,9 +27,7 @@ public class FotiusNet implements EntryPoint {
         new LoginWindow() {
             @Override
             public void onLoginSuccess(User user) {
-                new Frame(MyResources.INSTANCE.ownersManual().getUrl());
                 Info.display("Login succeed", "Login: " + user.getLogin() + " Password: " + user.getPassword() );
-
                 initDesktop();
             }
         }.show();
