@@ -87,6 +87,7 @@ public class StudentsWindow extends BaseGridWindow<Student, StudentProperties> {
                 @Override
                 public void onSelect(SelectEvent event) {
                     EditStudentWindow.getInstance().show();
+                    EditStudentWindow.getInstance().fillStudentData(new Student());
                 }
             });
         }

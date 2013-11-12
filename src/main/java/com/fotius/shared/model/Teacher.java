@@ -12,11 +12,11 @@ public class Teacher extends User implements Serializable {
     @JoinColumn(name = "roleid")
     private TeacherRole teacherRole;
 
-    public TeacherRole getRole() {
+    public TeacherRole getTeacherRole() {
         return teacherRole;
     }
 
-    public void setRole(TeacherRole role) {
+    public void setTeacherRole(TeacherRole role) {
         this.teacherRole = role;
     }
 }

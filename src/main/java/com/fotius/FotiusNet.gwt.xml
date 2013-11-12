@@ -2,6 +2,7 @@
 <module rename-to='fotiusnet'>
 
   <inherits name="com.sencha.gxt.desktop.Desktop"/>
+  <inherits name="com.google.gwt.logging.Logging"/>
 
   <entry-point class='com.fotius.client.FotiusNet'/>
 

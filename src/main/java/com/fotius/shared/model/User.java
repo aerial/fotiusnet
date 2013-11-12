@@ -26,6 +26,9 @@ public class User implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Transient
+    private UserRole role;
+
     public Long getUserId() {
         return userId;
     }
@@ -56,5 +59,13 @@ public class User implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 }

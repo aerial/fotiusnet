@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>groupId</groupId>
-    <artifactId>Fotiusnet</artifactId>
+    <artifactId>fotiusnet</artifactId>
     <packaging>war</packaging>
     <version>0.1</version>
     <dependencies>
@@ -33,9 +33,14 @@
             <artifactId>postgresql</artifactId>
             <version>9.1-901-1.jdbc4</version>
         </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
     </dependencies>
     <build>
-        <finalName>${project.artifactId}</finalName>
+        <finalName>${project.artifactId}-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -53,6 +58,7 @@
                     <style>PRETTY</style>
                     <extraJvmArgs>-XX:MaxPermSize=512m -Xmx512m</extraJvmArgs>
                     <draftCompile>true</draftCompile>
+                    <noServer>true</noServer>
                     <module>com.fotius.FotiusNet</module>
                 </configuration>
             </plugin>

@@ -58,7 +58,7 @@ public class EditTeacherWindow extends Window {
         getNameTxt().setValue(teacher.getName());
         getLoginTxt().setValue(teacher.getLogin());
         getPasswordTxt().setValue(teacher.getPassword());
-        getRoleCombo().setValue(teacher.getRole());
+        getRoleCombo().setValue(teacher.getTeacherRole());
     }
 
     private FramedPanel getMainPanel() {
@@ -143,7 +143,7 @@ public class EditTeacherWindow extends Window {
                         currentTeacher.setName(getNameTxt().getValue());
                         currentTeacher.setLogin(getLoginTxt().getValue());
                         currentTeacher.setPassword(getPasswordTxt().getValue());
-                        currentTeacher.setRole(roleCombo.getValue());
+                        currentTeacher.setTeacherRole(roleCombo.getValue());
                         fotiusService.saveTeacher(currentTeacher, new AsyncCallback<Teacher>() {
                             @Override
                             public void onFailure(Throwable caught) {

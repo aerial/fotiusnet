@@ -18,16 +18,23 @@ import com.sencha.gxt.desktop.client.widget.Desktop;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.info.Info;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class FotiusNet implements EntryPoint {
 
     private Desktop desktop;
     private FotiusnetConstants constants = GWT.create(FotiusnetConstants.class);
+    private static Logger logger = Logger.getLogger("");
+
 
     public void onModuleLoad() {
         new LoginWindow() {
             @Override
             public void onLoginSuccess(User user) {
-                Info.display("Login succeed", "Login: " + user.getLogin() + " Password: " + user.getPassword() );
+                logger.log(Level.INFO, "Login succeed" +  " Login: " + user.getLogin() + " Password: " + user.getPassword() );
+
+//                Info.display("Login succeed", "Login: " + user.getLogin() + " Password: " + user.getPassword() );
                 initDesktop();
             }
         }.show();

@@ -12,6 +12,6 @@ public interface TeacherProperties extends PropertyAccess<Teacher> {
     ValueProvider<Teacher, String> name();
     ValueProvider<Teacher, String> login();
     ValueProvider<Teacher, String> password();
-    @Editor.Path("role.name")
+    @Editor.Path("teacherRole.name")
     ValueProvider<Teacher, String> role();
 }

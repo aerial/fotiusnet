@@ -1,6 +1,7 @@
 package com.fotius.client.service;
 
 import com.fotius.shared.model.*;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.sencha.gxt.data.shared.loader.ListLoadConfig;
@@ -14,6 +15,8 @@ import java.util.List;
 public interface FotiusService extends RemoteService {
 
     User login(String login, String password);
+
+    User register(User user);
 
     PagingLoadResult<Teacher> getTeachers(PagingLoadConfig config);
 

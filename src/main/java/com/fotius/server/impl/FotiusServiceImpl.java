@@ -6,6 +6,7 @@ import com.fotius.shared.model.*;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.sencha.gxt.data.shared.SortInfo;
 import com.sencha.gxt.data.shared.loader.*;
+import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -15,20 +16,61 @@ public class FotiusServiceImpl extends RemoteServiceServlet
         implements FotiusService {
 
     private HibernateUtil hibernateUtil = new HibernateUtil();
+    private static Logger log = Logger.getLogger(FotiusServiceImpl.class.getName());
 
     @Override
     public User login(String login, String password) {
         Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         try {
             session.beginTransaction();
+            log.info("Logging in user with credentials " + login + " " + password);
             String sql = " from User where login = '" + login + "' and password = '" + password + "'";
+
             Query query = session.createQuery(sql);
             if (query.list().size() == 0) {
                 return null;
             } else {
                 return (User)query.list().get(0);
             }
-        } finally {
+        } catch (Exception e) {
+            log.error("We've got a problem while loggin in. User credentials: " + login + " " + password);
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            session.getTransaction().commit();
+        }
+    }
+
+    @Override
+    public User register(User user) {
+        Session session = hibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            session.beginTransaction();
+            User savedUser = null;
+            log.info("Creating user with credentials " + user.getLogin() + " " + user.getPassword());
+            if (user.getRole() instanceof TeacherRole) {
+                Teacher toSave = new Teacher();
+                toSave.setLogin(user.getLogin());
+                toSave.setPassword(user.getPassword());
+                toSave.setRole(user.getRole());
+                return (User)session.merge(toSave);
+            } else {
+                Student toSave = new Student();
+                toSave.setLogin(user.getLogin());
+                toSave.setPassword(user.getPassword());
+                //TODO complete and forget
+                user = saveStudent((Student) user);
+            }
+            return savedUser;
+
+        } catch (Exception e) {
+            log.error("We've got a problem while registering in. User credentials: " + user.getLogin() + " " + user.getPassword());
+            e.printStackTrace();
+            return null;
+        }
+
+        finally {
             session.getTransaction().commit();
         }
     }
@@ -269,8 +311,8 @@ public class FotiusServiceImpl extends RemoteServiceServlet
         Session session = hibernateUtil.getSessionFactory().getCurrentSession();
         try {
             session.beginTransaction();
-            Message sentMessage = (Message)session.merge(msg);
-            return sentMessage;
+            session.save(msg);
+            return new Message();//TODO remove this bullshit
         } finally {
             session.getTransaction().commit();
         }
