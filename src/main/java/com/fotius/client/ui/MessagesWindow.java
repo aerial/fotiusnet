@@ -19,6 +19,7 @@ import com.sencha.gxt.widget.core.client.info.Info;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
@@ -37,7 +38,7 @@ public class MessagesWindow extends BaseGridWindow<Message, MessageProperties> {
 
     public static MessagesWindow getInstance() {
         if (instance == null) {
-            instance = new MessagesWindow("msgs", Resources.IMAGES.group_small());
+            instance = new MessagesWindow("Messages", Resources.IMAGES.group_small());
         }
         return instance;
     }
@@ -51,9 +52,11 @@ public class MessagesWindow extends BaseGridWindow<Message, MessageProperties> {
     public List<ColumnConfig<Message, ?>> getColumnConfigs() {
         ColumnConfig<Message, String> nameColumn = new ColumnConfig<Message, String>(getProperties().senderName(), 150, "sender");
         ColumnConfig<Message, String> textColumn = new ColumnConfig<Message, String>(getProperties().text(), 150, "text");
+        ColumnConfig<Message, Date> dateColumn = new ColumnConfig<Message, Date>(getProperties().date(), 150, "text");
         List<ColumnConfig<Message, ?>> l = new ArrayList<ColumnConfig<Message, ?>>();
         l.add(nameColumn);
         l.add(textColumn);
+        l.add(dateColumn);
         return l;
     }
 
@@ -80,26 +83,10 @@ public class MessagesWindow extends BaseGridWindow<Message, MessageProperties> {
 
     private TextButton getSendMessageBtn() {
         if (sendMessageBtn == null) {
-            sendMessageBtn = UIHelper.createToolbarBtn("Send", Resources.IMAGES.edit24(), new SelectEvent.SelectHandler() {
+            sendMessageBtn = UIHelper.createToolbarBtn("Compose message", Resources.IMAGES.messages_medium(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent selectEvent) {
-
                     ComposeMessageWindow.getInstance().show();
-//                    Message msg = new Message();
-//                    msg.setSender(Session.currentUser);
-//                    msg.setRecipient(Session.currentUser);
-//                    msg.setText("testtext");
-//                    fotiusService.sendMessage(msg, new AsyncCallback<Message>() {
-//                        @Override
-//                        public void onFailure(Throwable caught) {
-//                            Info.display("msg not sent", "");
-//                        }
-//
-//                        @Override
-//                        public void onSuccess(Message result) {
-//                            Info.display("msg sent", "");
-//                        }
-//                    });
                 }
             });
         }

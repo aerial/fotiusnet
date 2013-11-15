@@ -12,8 +12,7 @@ import org.hibernate.Session;
 
 import java.util.*;
 
-public class FotiusServiceImpl extends RemoteServiceServlet
-        implements FotiusService {
+public class FotiusServiceImpl extends RemoteServiceServlet implements FotiusService {
 
     private HibernateUtil hibernateUtil = new HibernateUtil();
     private static Logger log = Logger.getLogger(FotiusServiceImpl.class.getName());
@@ -54,7 +53,7 @@ public class FotiusServiceImpl extends RemoteServiceServlet
                 toSave.setLogin(user.getLogin());
                 toSave.setPassword(user.getPassword());
                 toSave.setRole(user.getRole());
-                return (User)session.merge(toSave);
+                return (Teacher)session.merge(toSave);
             } else {
                 Student toSave = new Student();
                 toSave.setLogin(user.getLogin());

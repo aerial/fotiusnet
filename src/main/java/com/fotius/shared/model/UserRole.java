@@ -1,5 +1,7 @@
 package com.fotius.shared.model;
 
+import java.io.Serializable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: vvinnik

@@ -38,6 +38,7 @@ public class StudentsWindow extends BaseGridWindow<Student, StudentProperties> {
 
     public StudentsWindow(String title, ImageResource icon) {
         super(title, icon);
+
     }
 
     @Override

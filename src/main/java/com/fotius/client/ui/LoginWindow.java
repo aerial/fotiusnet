@@ -36,7 +36,7 @@ public abstract class LoginWindow extends Window {
     protected TextField loginUserNameTxt;
     protected PasswordField loginPasswordTxt;
 
-    protected TextField regUserNameTxt;
+    protected TextField regUserNameTxt, regNameTxt;
     protected PasswordField regPasswordTxt;
 
 
@@ -58,12 +58,12 @@ public abstract class LoginWindow extends Window {
         loginUserNameTxt.setTitle("Username");
         loginUserNameTxt.setAllowBlank(false);
         loginUserNameTxt.setText("aerial");
-        p.add(new FieldLabel(loginUserNameTxt, "Login here"), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        p.add(new FieldLabel(loginUserNameTxt, "Login"), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
         loginPasswordTxt = new PasswordField();
         loginPasswordTxt.setTitle("Password");
         loginPasswordTxt.setAllowBlank(false);
         loginPasswordTxt.setText("aerial");
-        p.add(new FieldLabel(loginPasswordTxt, "Password here"), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        p.add(new FieldLabel(loginPasswordTxt, "Password"), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
         setFocusWidget(loginUserNameTxt);
 
         status = new Status();
@@ -73,16 +73,21 @@ public abstract class LoginWindow extends Window {
 //        addButton(getLoginBtn());
 
         VerticalLayoutContainer p2 = new VerticalLayoutContainer();
+        regNameTxt = new TextField();
+        regNameTxt.setTitle("Name");
+        regNameTxt.setAllowBlank(false);
+        regNameTxt.setText("");
+        p2.add(new FieldLabel(regNameTxt, "Name"), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
         regUserNameTxt = new TextField();
-        regUserNameTxt.setTitle("RUsername");
+        regUserNameTxt.setTitle("Username");
         regUserNameTxt.setAllowBlank(false);
-        regUserNameTxt.setText("Raerial");
-        p2.add(new FieldLabel(regUserNameTxt, "RLogin here"), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        regUserNameTxt.setText("");
+        p2.add(new FieldLabel(regUserNameTxt, "Login"), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
         regPasswordTxt = new PasswordField();
         regPasswordTxt.setTitle("Password");
         regPasswordTxt.setAllowBlank(false);
-        regPasswordTxt.setText("aerial");
-        p2.add(new FieldLabel(regPasswordTxt, "Password here"), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        regPasswordTxt.setText("");
+        p2.add(new FieldLabel(regPasswordTxt, "Password"), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
         p2.add(new FieldLabel(getRoleCombo(), "Role"), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
         setFocusWidget(regUserNameTxt);
         p.add(getLoginBtn());
@@ -146,18 +151,20 @@ public abstract class LoginWindow extends Window {
             public void onSelect(SelectEvent event) {
 
                 log.info("Registering ...");
-                User user = new User();
-                user.setLogin(regUserNameTxt.getText());
-                user.setPassword(regPasswordTxt.getText());
-                user.setRole(getRoleCombo().getCurrentValue());
-                fotiusService.register(user, new AsyncCallback<User>() {
+
+                Teacher teacher = new Teacher();
+                teacher.setLogin(regUserNameTxt.getText());
+                teacher.setPassword(regPasswordTxt.getText());
+                teacher.setName(regNameTxt.getText());
+                teacher.setTeacherRole(getRoleCombo().getCurrentValue());
+                fotiusService.saveTeacher(teacher, new AsyncCallback<Teacher>() {
                     @Override
                     public void onFailure(Throwable throwable) {
                         //To change body of implemented methods use File | Settings | File Templates.
                     }
 
                     @Override
-                    public void onSuccess(User user) {
+                    public void onSuccess(Teacher user) {
 
                         onSubmit(user.getLogin(), user.getPassword());
                     }

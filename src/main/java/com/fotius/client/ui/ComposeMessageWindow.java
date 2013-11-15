@@ -27,6 +27,7 @@ import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 
+import java.util.Date;
 import java.util.List;
 
 public class ComposeMessageWindow extends Window {
@@ -43,7 +44,7 @@ public class ComposeMessageWindow extends Window {
 
     public static ComposeMessageWindow getInstance() {
         if (instance == null) {
-            instance = new ComposeMessageWindow("Compose message", Resources.IMAGES.group_small());
+            instance = new ComposeMessageWindow("Compose message", Resources.IMAGES.messages_small());
         }
         return instance;
     }
@@ -122,13 +123,14 @@ public class ComposeMessageWindow extends Window {
 
     private TextButton getSendMessageBtn() {
         if (sendMessageBtn == null) {
-            sendMessageBtn = UIHelper.createToolbarBtn("send message", Resources.IMAGES.add24(), new SelectEvent.SelectHandler() {
+            sendMessageBtn = UIHelper.createToolbarBtn("Send message", Resources.IMAGES.messages_medium(), new SelectEvent.SelectHandler() {
                 @Override
                 public void onSelect(SelectEvent event) {
                     Message toSend = new Message();
                     toSend.setSender(Session.currentUser);
                     toSend.setRecipient(recipientCombo.getCurrentValue());
                     toSend.setText(messageTxt.getText());
+                    toSend.setDate(new Date());
                     fotiusService.sendMessage(toSend, new AsyncCallback<Message>() {
                         @Override
                         public void onFailure(Throwable caught) {
@@ -136,11 +138,11 @@ public class ComposeMessageWindow extends Window {
 
                         @Override
                         public void onSuccess(Message result) {
-                            Info.display("message sent", "rly");
+                            ComposeMessageWindow.getInstance().hide();
+                            MessagesWindow.getInstance().refresh();
+                            Info.display("Info", "Message sent successfully");
                         }
                     });
-
-
                 }
             });
         }

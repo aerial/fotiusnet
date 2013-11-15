@@ -121,4 +121,13 @@ public interface ExampleImages extends ClientBundle {
 
   @Source("group_small.png")
   ImageResource group_small();
+
+  @Source("f_messages_64.png")
+  ImageResource messages_big();
+
+  @Source("f_messages_24.png")
+  ImageResource messages_medium();
+
+  @Source("f_messages_16.png")
+  ImageResource messages_small();
 }

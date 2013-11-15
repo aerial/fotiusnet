@@ -27,8 +27,6 @@ import java.util.List;
 
 public abstract class BaseGridWindow<T, P extends PropertyAccess<T>> extends Window {
 
-    private static final String WIDTH = "500px";
-    private static final String HEIGHT = "400px";
     private PagingLoader loader;
     private Grid<T> grid;
     private ToolBar toolBar;
@@ -36,9 +34,9 @@ public abstract class BaseGridWindow<T, P extends PropertyAccess<T>> extends Win
     public BaseGridWindow(String title, ImageResource icon) {
         getHeader().setIcon(icon);
         setHeadingText(title);
-        setSize(WIDTH, HEIGHT);
         setMaximizable(true);
         setMinimizable(true);
+        setPixelSize(600, 500);
     }
 
     @Override
@@ -59,6 +57,8 @@ public abstract class BaseGridWindow<T, P extends PropertyAccess<T>> extends Win
     public abstract ModelKeyProvider<T> getModelKey();
 
     public abstract void editEntity();
+
+//    public abstract void getAutoExpand(ColumnConfig column);
 
     private VerticalLayoutContainer getGridPanel() {
         RpcProxy<PagingLoadConfig, PagingLoadResult<T>> proxy = new RpcProxy<PagingLoadConfig,
@@ -100,6 +100,7 @@ public abstract class BaseGridWindow<T, P extends PropertyAccess<T>> extends Win
                 editEntity();
             }
         });
+        grid.getView().setForceFit(true);
         VerticalLayoutContainer con = new VerticalLayoutContainer();
         con.setBorders(true);
         con.add(getToolBar(), new VerticalLayoutContainer.VerticalLayoutData(1, -1));

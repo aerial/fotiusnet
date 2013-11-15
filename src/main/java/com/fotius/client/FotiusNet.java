@@ -33,8 +33,6 @@ public class FotiusNet implements EntryPoint {
             @Override
             public void onLoginSuccess(User user) {
                 logger.log(Level.INFO, "Login succeed" +  " Login: " + user.getLogin() + " Password: " + user.getPassword() );
-
-//                Info.display("Login succeed", "Login: " + user.getLogin() + " Password: " + user.getPassword() );
                 initDesktop();
             }
         }.show();
@@ -48,6 +46,7 @@ public class FotiusNet implements EntryPoint {
 
     private void initDesktop() {
         desktop = new Desktop();
+        desktop.getTaskBar().hide();
         desktop.addWindow(TeachersWindow.getInstance());
         desktop.addWindow(StudentsWindow.getInstance());
         desktop.addWindow(GroupsWindow.getInstance());
@@ -63,7 +62,6 @@ public class FotiusNet implements EntryPoint {
                 GWT.runAsync(new RunAsyncCallback() {
                     @Override
                     public void onFailure(Throwable reason) {
-
                     }
 
                     @Override
@@ -102,8 +100,8 @@ public class FotiusNet implements EntryPoint {
         desktop.addShortcut(groupsShortcut);
 
         Shortcut msgsShortCut = new Shortcut();
-        msgsShortCut.setText("msgs");
-        msgsShortCut.setIcon(Resources.IMAGES.group());
+        msgsShortCut.setText("Messages");
+        msgsShortCut.setIcon(Resources.IMAGES.messages_big());
         msgsShortCut.addSelectHandler(new SelectEvent.SelectHandler() {
             @Override
             public void onSelect(SelectEvent event) {
