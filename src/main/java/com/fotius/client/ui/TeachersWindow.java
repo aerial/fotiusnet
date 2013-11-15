@@ -16,6 +16,7 @@ import com.sencha.gxt.widget.core.client.box.MessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
+import com.sencha.gxt.widget.core.client.grid.GridView;
 import com.sencha.gxt.widget.core.client.info.Info;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class TeachersWindow extends BaseGridWindow<Teacher, TeacherProperties> {
     private static final TeacherProperties props = GWT.create(TeacherProperties.class);
     private final FotiusServiceAsync fotiusService = GWT.create(FotiusService.class);
     private TextButton addTeacherBtn, editTeacherBtn, removeTeacherBtn;
+    private GridView view;
 
 
     public static TeachersWindow getInstance() {
@@ -51,6 +53,7 @@ public class TeachersWindow extends BaseGridWindow<Teacher, TeacherProperties> {
     @Override
     public List<ColumnConfig<Teacher, ?>> getColumnConfigs() {
         ColumnConfig<Teacher, String> nameColumn = new ColumnConfig<Teacher, String>(getProperties().name(), 150, constants.teacherName());
+        getView().setAutoExpandColumn(nameColumn);
         ColumnConfig<Teacher, String> loginColumn = new ColumnConfig<Teacher, String>(getProperties().login(), 150, constants.teacherLogin());
         ColumnConfig<Teacher, String> passwordConfig = new ColumnConfig<Teacher, String>(getProperties().password(), 150, constants.teacherPassword());
         ColumnConfig<Teacher, String> roleConfig = new ColumnConfig<Teacher, String>(getProperties().role(), 150, constants.teacherRole());
@@ -70,6 +73,14 @@ public class TeachersWindow extends BaseGridWindow<Teacher, TeacherProperties> {
     @Override
     public ModelKeyProvider<Teacher> getModelKey() {
         return props.userId();
+    }
+
+    @Override
+    public GridView getView() {
+        if (view == null) {
+            view = new GridView();
+        }
+        return view;
     }
 
     @Override

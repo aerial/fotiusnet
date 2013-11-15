@@ -33,6 +33,7 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
+import com.sencha.gxt.widget.core.client.grid.GridView;
 import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
@@ -48,6 +49,7 @@ public class GroupsWindow extends BaseGridWindow<StudentGroup, StudentGroupPrope
     private TextButton addGroupBtn, editGroupBtn, removeGroupBtn;
     private final StudentGroupProperties props = GWT.create(StudentGroupProperties.class);
     private static FotiusnetConstants constants = GWT.create(FotiusnetConstants.class);
+    private GridView view;
 
     public static GroupsWindow getInstance() {
         if (instance == null) {
@@ -81,6 +83,14 @@ public class GroupsWindow extends BaseGridWindow<StudentGroup, StudentGroupPrope
     @Override
     public ModelKeyProvider<StudentGroup> getModelKey() {
         return getProperties().groupId();
+    }
+
+    @Override
+    public GridView getView() {
+        if (view == null) {
+            view = new GridView();
+        }
+        return view;
     }
 
     @Override

@@ -16,6 +16,8 @@ import com.sencha.gxt.widget.core.client.box.MessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
+import com.sencha.gxt.widget.core.client.grid.GridView;
+import com.sencha.gxt.widget.core.client.grid.GroupingView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +30,7 @@ public class StudentsWindow extends BaseGridWindow<Student, StudentProperties> {
     private final StudentProperties props = GWT.create(StudentProperties.class);
     private final FotiusServiceAsync fotiusService = GWT.create(FotiusService.class);
     private TextButton addStudentBtn, editStudentBtn, removeStudentBtn;
+    private GroupingView view;
 
     public static StudentsWindow getInstance() {
         if (instance == null) {
@@ -49,9 +52,11 @@ public class StudentsWindow extends BaseGridWindow<Student, StudentProperties> {
     @Override
     public List<ColumnConfig<Student, ?>> getColumnConfigs() {
         ColumnConfig<Student, String> nameColumn = new ColumnConfig<Student, String>(getProperties().name(), 150, constants.studentName());
+        getView().setAutoExpandColumn(nameColumn);
         ColumnConfig<Student, String> loginColumn = new ColumnConfig<Student, String>(getProperties().login(), 150, constants.studentLogin());
         ColumnConfig<Student, String> passwordConfig = new ColumnConfig<Student, String>(getProperties().password(), 150, constants.studentPassword());
         ColumnConfig<Student, String> groupConfig = new ColumnConfig<Student, String>(getProperties().studentGroup(), 150, constants.studentGroup());
+        getView().groupBy(groupConfig);
         ColumnConfig<Student, String> roleConfig = new ColumnConfig<Student, String>(getProperties().role(), 150, constants.studentRole());
         List<ColumnConfig<Student, ?>> l = new ArrayList<ColumnConfig<Student, ?>>();
         l.add(nameColumn);
@@ -80,6 +85,15 @@ public class StudentsWindow extends BaseGridWindow<Student, StudentProperties> {
             studentWindow.fillStudentData(student);
             studentWindow.show();
         }
+    }
+
+    @Override
+    public GroupingView getView() {
+        if (view == null) {
+            view = new GroupingView<Student>();
+            view.setShowGroupedColumn(false);
+        }
+        return view;
     }
 
     private TextButton getAddStudentButton() {

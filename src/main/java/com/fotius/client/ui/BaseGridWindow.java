@@ -19,6 +19,7 @@ import com.sencha.gxt.widget.core.client.event.RowDoubleClickEvent;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
+import com.sencha.gxt.widget.core.client.grid.GridView;
 import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
@@ -30,6 +31,7 @@ public abstract class BaseGridWindow<T, P extends PropertyAccess<T>> extends Win
     private PagingLoader loader;
     private Grid<T> grid;
     private ToolBar toolBar;
+    private GridView view;
 
     public BaseGridWindow(String title, ImageResource icon) {
         getHeader().setIcon(icon);
@@ -58,7 +60,7 @@ public abstract class BaseGridWindow<T, P extends PropertyAccess<T>> extends Win
 
     public abstract void editEntity();
 
-//    public abstract void getAutoExpand(ColumnConfig column);
+    public abstract GridView getView();
 
     private VerticalLayoutContainer getGridPanel() {
         RpcProxy<PagingLoadConfig, PagingLoadResult<T>> proxy = new RpcProxy<PagingLoadConfig,
@@ -100,7 +102,9 @@ public abstract class BaseGridWindow<T, P extends PropertyAccess<T>> extends Win
                 editEntity();
             }
         });
-        grid.getView().setForceFit(true);
+        getView().setForceFit(true);
+        grid.setView(getView());
+
         VerticalLayoutContainer con = new VerticalLayoutContainer();
         con.setBorders(true);
         con.add(getToolBar(), new VerticalLayoutContainer.VerticalLayoutData(1, -1));

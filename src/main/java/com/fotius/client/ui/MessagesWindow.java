@@ -15,6 +15,7 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
+import com.sencha.gxt.widget.core.client.grid.GridView;
 import com.sencha.gxt.widget.core.client.info.Info;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class MessagesWindow extends BaseGridWindow<Message, MessageProperties> {
     private final FotiusServiceAsync fotiusService = GWT.create(FotiusService.class);
     private final MessageProperties props = GWT.create(MessageProperties.class);
     private TextButton sendMessageBtn;
+    private GridView view;
 
 
     public MessagesWindow(String title, ImageResource icon) {
@@ -52,7 +54,8 @@ public class MessagesWindow extends BaseGridWindow<Message, MessageProperties> {
     public List<ColumnConfig<Message, ?>> getColumnConfigs() {
         ColumnConfig<Message, String> nameColumn = new ColumnConfig<Message, String>(getProperties().senderName(), 150, "sender");
         ColumnConfig<Message, String> textColumn = new ColumnConfig<Message, String>(getProperties().text(), 150, "text");
-        ColumnConfig<Message, Date> dateColumn = new ColumnConfig<Message, Date>(getProperties().date(), 150, "text");
+        getView().setAutoExpandColumn(textColumn);
+        ColumnConfig<Message, Date> dateColumn = new ColumnConfig<Message, Date>(getProperties().date(), 150, "date");
         List<ColumnConfig<Message, ?>> l = new ArrayList<ColumnConfig<Message, ?>>();
         l.add(nameColumn);
         l.add(textColumn);
@@ -75,6 +78,15 @@ public class MessagesWindow extends BaseGridWindow<Message, MessageProperties> {
         ViewMessageWindow.getInstance().fillForm(getSelectedEntity());
         ViewMessageWindow.getInstance().show();
     }
+
+    @Override
+    public GridView getView() {
+        if (view == null) {
+            view = new GridView();
+        }
+        return view;
+    }
+
 
     @Override
     public List<TextButton> getToolbarButtons() {
