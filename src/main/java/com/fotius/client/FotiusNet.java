@@ -77,7 +77,7 @@ public class FotiusNet implements EntryPoint {
 
         Shortcut studentsShortcut = new Shortcut();
         studentsShortcut.setText(constants.students());
-        studentsShortcut.setIcon(Resources.IMAGES.hp());
+        studentsShortcut.setIcon(Resources.IMAGES.student());
         studentsShortcut.addSelectHandler(new SelectEvent.SelectHandler() {
             @Override
             public void onSelect(SelectEvent event) {

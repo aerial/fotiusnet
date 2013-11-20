@@ -47,6 +47,9 @@ public interface ExampleImages extends ClientBundle {
   @Source("gnome-session.png")
   ImageResource hp();
 
+  @Source("student.png")
+  ImageResource student();
+
   @Source("stock_people.png")
   ImageResource group();
 
