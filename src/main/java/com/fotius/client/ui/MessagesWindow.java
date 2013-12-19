@@ -6,16 +6,21 @@ import com.fotius.client.model.MessageProperties;
 import com.fotius.client.service.FotiusService;
 import com.fotius.client.service.FotiusServiceAsync;
 import com.fotius.shared.model.Message;
+import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.loader.PagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
+import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.grid.GridView;
+import com.sencha.gxt.widget.core.client.grid.RowExpander;
 import com.sencha.gxt.widget.core.client.info.Info;
 
 import java.util.ArrayList;
@@ -31,6 +36,8 @@ public class MessagesWindow extends BaseGridWindow<Message, MessageProperties> {
     private final MessageProperties props = GWT.create(MessageProperties.class);
     private TextButton sendMessageBtn;
     private GridView view;
+    private List<ColumnConfig<Message, ?>> columnConfigs;
+    private RowExpander<Message> expander;
 
 
     public MessagesWindow(String title, ImageResource icon) {
@@ -52,15 +59,35 @@ public class MessagesWindow extends BaseGridWindow<Message, MessageProperties> {
 
     @Override
     public List<ColumnConfig<Message, ?>> getColumnConfigs() {
-        ColumnConfig<Message, String> nameColumn = new ColumnConfig<Message, String>(getProperties().senderName(), 150, "sender");
-        ColumnConfig<Message, String> textColumn = new ColumnConfig<Message, String>(getProperties().text(), 150, "text");
-        getView().setAutoExpandColumn(textColumn);
-        ColumnConfig<Message, Date> dateColumn = new ColumnConfig<Message, Date>(getProperties().date(), 150, "date");
-        List<ColumnConfig<Message, ?>> l = new ArrayList<ColumnConfig<Message, ?>>();
-        l.add(nameColumn);
-        l.add(textColumn);
-        l.add(dateColumn);
-        return l;
+        if (columnConfigs == null) {
+            ColumnConfig<Message, String> nameColumn = new ColumnConfig<Message, String>(getProperties().senderName(), 150, "sender");
+            ColumnConfig<Message, String> textColumn = new ColumnConfig<Message, String>(getProperties().subject(), 150, "subject");
+            getView().setAutoExpandColumn(textColumn);
+            ColumnConfig<Message, Date> dateColumn = new ColumnConfig<Message, Date>(getProperties().date(), 150, "date");
+            columnConfigs = new ArrayList<ColumnConfig<Message, ?>>();
+            columnConfigs.add(getExpander());
+            columnConfigs.add(nameColumn);
+            columnConfigs.add(textColumn);
+            columnConfigs.add(dateColumn);
+
+        }
+
+        return columnConfigs;
+    }
+
+    public RowExpander<Message> getExpander() {
+        if (expander == null) {
+            IdentityValueProvider<Message> identity = new IdentityValueProvider<Message>();
+            expander = new RowExpander<Message>(identity, new AbstractCell<Message>() {
+                @Override
+                public void render(Context context, Message value, SafeHtmlBuilder sb) {
+                    sb.appendHtmlConstant("<p style='margin: 5px 5px 10px'><b>Subject:</b> " + value.getSubject() + "</p>");
+                    sb.appendHtmlConstant("<p style='margin: 5px 5px 10px'><b>Text:</b> " + value.getText());
+                }
+            });
+
+        }
+        return expander;
     }
 
     @Override
@@ -85,6 +112,13 @@ public class MessagesWindow extends BaseGridWindow<Message, MessageProperties> {
             view = new GridView();
         }
         return view;
+    }
+
+    @Override
+    public Grid getGrid() {
+        Grid grid = super.getGrid();
+        getExpander().initPlugin(grid);
+        return grid;
     }
 
 

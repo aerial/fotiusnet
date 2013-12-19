@@ -37,6 +37,7 @@
         <mapping class="com.fotius.shared.model.StudentRole"/>
         <mapping class="com.fotius.shared.model.StudentGroup"/>
         <mapping class="com.fotius.shared.model.Message"/>
+        <mapping class="com.fotius.shared.model.Document"/>
     </session-factory>
 
 </hibernate-configuration>

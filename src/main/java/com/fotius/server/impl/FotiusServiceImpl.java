@@ -346,6 +346,4 @@ public class FotiusServiceImpl extends RemoteServiceServlet implements FotiusSer
             session.getTransaction().commit();
         }
     }
-
-
 }

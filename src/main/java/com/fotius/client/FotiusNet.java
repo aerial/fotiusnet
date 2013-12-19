@@ -1,18 +1,13 @@
 package com.fotius.client;
 
-import com.fotius.client.service.FotiusService;
-import com.fotius.client.service.FotiusServiceAsync;
 import com.fotius.client.ui.*;
-import com.fotius.shared.model.Teacher;
 import com.fotius.shared.model.User;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
-import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.UIObject;
-import com.sencha.gxt.desktop.client.layout.DesktopLayoutType;
 import com.sencha.gxt.desktop.client.widget.*;
 import com.sencha.gxt.desktop.client.widget.Desktop;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
@@ -46,11 +41,6 @@ public class FotiusNet implements EntryPoint {
 
     private void initDesktop() {
         desktop = new Desktop();
-        desktop.getTaskBar().hide();
-        desktop.addWindow(TeachersWindow.getInstance());
-        desktop.addWindow(StudentsWindow.getInstance());
-        desktop.addWindow(GroupsWindow.getInstance());
-        desktop.setDesktopLayoutType(DesktopLayoutType.CASCADE);
         setBackground(RootPanel.get());
         RootPanel.get().add(desktop.asWidget());
         Shortcut teachersShortcut = new Shortcut();
@@ -110,5 +100,17 @@ public class FotiusNet implements EntryPoint {
             }
         });
         desktop.addShortcut(msgsShortCut);
+
+        Shortcut documentsShortcut = new Shortcut();
+        documentsShortcut.setText("Documents");
+        documentsShortcut.setIcon(Resources.IMAGES.upload_big());
+        documentsShortcut.addSelectHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent event) {
+                DocumentsWindow.getInstance().show();
+                Info.display("Docs window", "displayed");
+            }
+        });
+        desktop.addShortcut(documentsShortcut);
     }
 }

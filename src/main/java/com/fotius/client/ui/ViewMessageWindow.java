@@ -16,6 +16,7 @@ public class ViewMessageWindow extends Window {
     private static final String HEIGHT = "400px";
     private TextField fromTxt;
     private TextArea messageTxt;
+    private TextField messageSubject;
 
     public static ViewMessageWindow getInstance() {
         if (instance == null) {
@@ -40,6 +41,7 @@ public class ViewMessageWindow extends Window {
         VerticalLayoutContainer con = new VerticalLayoutContainer();
         con.setBorders(true);
         con.add(getFromTxt(), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        con.add(getMessageSubject(), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
         con.add(getMessageTxt(), new VerticalLayoutContainer.VerticalLayoutData(1, 1));
         return con;
     }
@@ -64,8 +66,15 @@ public class ViewMessageWindow extends Window {
     public void fillForm(Message msg) {
         getFromTxt().setText(msg.getSender().getName());
         getMessageTxt().setText(msg.getText());
+        getMessageSubject().setText(msg.getSubject());
+
     }
 
 
-
+    public TextField getMessageSubject() {
+        if (messageSubject == null) {
+            messageSubject = new TextField();
+        }
+        return messageSubject;
+    }
 }

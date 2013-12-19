@@ -24,6 +24,9 @@ public class Message implements Serializable {
     @Column(name = "text")
     private String text;
 
+    @Column(name = "subject")
+    private String subject;
+
     @Column(name = "date")
     private Date date;
 
@@ -66,5 +69,13 @@ public class Message implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 }

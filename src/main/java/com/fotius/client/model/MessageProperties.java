@@ -14,6 +14,7 @@ import java.util.Date;
 public interface MessageProperties extends PropertyAccess<Message> {
     ModelKeyProvider<Message> messageId();
     ValueProvider<Message, String> text();
+    ValueProvider<Message, String> subject();
     ValueProvider<Message, Date> date();
     @Editor.Path("sender.name")
     ValueProvider<Message, String> senderName();

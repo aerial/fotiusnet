@@ -13,10 +13,4 @@
   <replace-with class="com.sencha.gxt.desktop.client.theme.base.shortcut.ShortcutCellDefaultAppearance">
     <when-type-is class="com.sencha.gxt.desktop.client.widget.ShortcutCell.ShortcutCellAppearance" />
   </replace-with>
-  <replace-with class="com.sencha.gxt.desktop.client.theme.base.startbutton.StartButtonCellDefaultAppearance">
-    <when-type-is class="com.sencha.gxt.desktop.client.widget.StartButtonCell.StartButtonCellAppearance" />
-  </replace-with>
-  <replace-with class="com.sencha.gxt.desktop.client.theme.base.taskbutton.TaskButtonCellDefaultAppearance">
-    <when-type-is class="com.sencha.gxt.desktop.client.widget.TaskButtonCell.TaskButtonCellAppearance" />
-  </replace-with>
 </module>

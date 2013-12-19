@@ -23,6 +23,7 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.TextArea;
+import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
@@ -38,6 +39,7 @@ public class ComposeMessageWindow extends Window {
     private static final String HEIGHT = "400px";
     private ComboBox<User> recipientCombo;
     private TextArea messageTxt;
+    private TextField messageSubject;
     private ToolBar toolBar;
     private TextButton sendMessageBtn;
     private final FotiusServiceAsync fotiusService = GWT.create(FotiusService.class);
@@ -71,6 +73,7 @@ public class ComposeMessageWindow extends Window {
         con.setBorders(true);
         con.add(getToolBar(), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
         con.add(getRecipientCombo(), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        con.add(getMessageSubject(), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
         con.add(getMessageTxt(), new VerticalLayoutContainer.VerticalLayoutData(1, 1));
         return con;
     }
@@ -130,6 +133,7 @@ public class ComposeMessageWindow extends Window {
                     toSend.setSender(Session.currentUser);
                     toSend.setRecipient(recipientCombo.getCurrentValue());
                     toSend.setText(messageTxt.getText());
+                    toSend.setSubject(messageSubject.getText());
                     toSend.setDate(new Date());
                     fotiusService.sendMessage(toSend, new AsyncCallback<Message>() {
                         @Override
@@ -158,5 +162,10 @@ public class ComposeMessageWindow extends Window {
     }
 
 
-
+    public TextField getMessageSubject() {
+        if (messageSubject == null) {
+            messageSubject = new TextField();
+        }
+        return messageSubject;
+    }
 }

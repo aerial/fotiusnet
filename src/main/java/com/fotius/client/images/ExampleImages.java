@@ -8,6 +8,12 @@ public interface ExampleImages extends ClientBundle {
 
   public ExampleImages INSTANCE = GWT.create(ExampleImages.class);
 
+  @Source("arrow_up.png")
+  ImageResource upload();
+
+  @Source("upload_big.png")
+  ImageResource upload_big();
+
   @Source("add16.gif")
   ImageResource add16();
 

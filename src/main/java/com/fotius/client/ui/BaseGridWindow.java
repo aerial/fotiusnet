@@ -32,6 +32,10 @@ public abstract class BaseGridWindow<T, P extends PropertyAccess<T>> extends Win
     private Grid<T> grid;
     private ToolBar toolBar;
     private GridView view;
+    private ListStore store;
+    private ContentPanel mainPanel;
+    private ColumnModel<T> columnModel;
+    private RpcProxy<PagingLoadConfig, PagingLoadResult<T>> proxy;
 
     public BaseGridWindow(String title, ImageResource icon) {
         getHeader().setIcon(icon);
@@ -43,10 +47,12 @@ public abstract class BaseGridWindow<T, P extends PropertyAccess<T>> extends Win
 
     @Override
     public void show() {
-        ContentPanel mainPanel = new ContentPanel();
-        mainPanel.setHeaderVisible(false);
-        mainPanel.setWidget(getGridPanel());
-        add(mainPanel);
+        if (mainPanel == null) {
+            mainPanel = new ContentPanel();
+            mainPanel.setHeaderVisible(false);
+            mainPanel.setWidget(getGridPanel());
+            add(mainPanel);
+        }
         super.show();
     }
 
@@ -63,54 +69,83 @@ public abstract class BaseGridWindow<T, P extends PropertyAccess<T>> extends Win
     public abstract GridView getView();
 
     private VerticalLayoutContainer getGridPanel() {
-        RpcProxy<PagingLoadConfig, PagingLoadResult<T>> proxy = new RpcProxy<PagingLoadConfig,
-                PagingLoadResult<T>>() {
-            @Override
-            public void load(PagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<T>> callback) {
-                loadData(loadConfig, callback);
-            }
-        };
-        ListStore<T> store = new ListStore<T>(getModelKey());
-        loader = new PagingLoader<PagingLoadConfig, PagingLoadResult<T>>(
-                proxy);
-        loader.setRemoteSort(false);
-        loader.addLoadHandler(new LoadResultListStoreBinding<PagingLoadConfig, T, PagingLoadResult<T>>(store));
-
         final PagingToolBar toolBar = new PagingToolBar(50);
         toolBar.getElement().getStyle().setProperty("borderBottom", "none");
-        toolBar.bind(loader);
-
-        ColumnModel<T> cm = new ColumnModel<T>(getColumnConfigs());
-
-        grid = new Grid<T>(store, cm){
-            @Override
-            protected void onAfterFirstAttach() {
-                super.onAfterFirstAttach();
-                Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-                    @Override
-                    public void execute() {
-                        loader.load();
-                    }
-                });
-            }
-        };
-        grid.setLoader(loader);
-        grid.setLoadMask(true);
-        grid.addRowDoubleClickHandler(new RowDoubleClickEvent.RowDoubleClickHandler() {
-            @Override
-            public void onRowDoubleClick(RowDoubleClickEvent event) {
-                editEntity();
-            }
-        });
-        getView().setForceFit(true);
-        grid.setView(getView());
-
+        toolBar.bind(getLoader());
         VerticalLayoutContainer con = new VerticalLayoutContainer();
         con.setBorders(true);
         con.add(getToolBar(), new VerticalLayoutContainer.VerticalLayoutData(1, -1));
-        con.add(grid, new VerticalLayoutContainer.VerticalLayoutData(1, 1));
+        con.add(getGrid(), new VerticalLayoutContainer.VerticalLayoutData(1, 1));
         con.add(toolBar, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
         return con;
+    }
+
+    public RpcProxy<PagingLoadConfig, PagingLoadResult<T>> getProxy() {
+        if (proxy == null) {
+            proxy = new RpcProxy<PagingLoadConfig,
+                    PagingLoadResult<T>>() {
+                @Override
+                public void load(PagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<T>> callback) {
+                    loadData(loadConfig, callback);
+                }
+            };
+
+        }
+        return proxy;
+    }
+
+    public PagingLoader getLoader() {
+        if (loader == null) {
+            loader = new PagingLoader<PagingLoadConfig, PagingLoadResult<T>>(
+                    getProxy());
+            loader.setRemoteSort(false);
+            loader.addLoadHandler(new LoadResultListStoreBinding<PagingLoadConfig, T, PagingLoadResult<T>>(getStore()));
+
+
+        }
+        return loader;
+    }
+
+    public Grid<T> getGrid() {
+        if (grid == null) {
+            grid = new Grid<T>(getStore(), getColumnModel()){
+                @Override
+                protected void onAfterFirstAttach() {
+                    super.onAfterFirstAttach();
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                        @Override
+                        public void execute() {
+                            getLoader().load();
+                        }
+                    });
+                }
+            };
+            grid.setLoader(getLoader());
+            grid.setLoadMask(true);
+            grid.addRowDoubleClickHandler(new RowDoubleClickEvent.RowDoubleClickHandler() {
+                @Override
+                public void onRowDoubleClick(RowDoubleClickEvent event) {
+                    editEntity();
+                }
+            });
+            getView().setForceFit(true);
+            grid.setView(getView());
+        }
+        return grid;
+    }
+
+    public ListStore<T> getStore() {
+        if (store == null) {
+            store = new ListStore<T>(getModelKey());
+        }
+        return store;
+    }
+
+    public ColumnModel<T> getColumnModel() {
+        if (columnModel == null) {
+            columnModel = new ColumnModel<T>(getColumnConfigs());
+        }
+        return columnModel;
     }
 
     private ToolBar getToolBar() {
@@ -128,10 +163,10 @@ public abstract class BaseGridWindow<T, P extends PropertyAccess<T>> extends Win
     public abstract List<TextButton> getToolbarButtons();
 
     public void refresh() {
-        loader.load();
+        getLoader().load();
     }
 
     public T getSelectedEntity() {
-        return grid.getSelectionModel().getSelectedItem();
+        return getGrid().getSelectionModel().getSelectedItem();
     }
 }

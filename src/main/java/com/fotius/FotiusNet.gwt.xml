@@ -3,6 +3,7 @@
 
   <inherits name="com.sencha.gxt.desktop.Desktop"/>
   <inherits name="com.google.gwt.logging.Logging"/>
+  <inherits name="gwtupload.GWTUpload"/>
 
   <entry-point class='com.fotius.client.FotiusNet'/>
 
